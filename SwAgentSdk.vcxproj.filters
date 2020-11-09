@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{7d747e01-d928-483d-ae71-1627930d14ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\thread">
+      <UniqueIdentifier>{231b8b42-c674-494d-9432-934f3db2e7fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util">
+      <UniqueIdentifier>{3ee24192-608b-4d38-9508-00aeb6f4db18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{7503aa69-af15-46bb-8fd7-ff2f11810352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\thread">
+      <UniqueIdentifier>{fbc57d44-1cd7-463c-a80b-8f9069f9979a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\util">
+      <UniqueIdentifier>{88ea358f-8181-4694-9e4e-67f917409485}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\util\KStringUtility.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\KTime.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KAny.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KAtomic.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KBuffer.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KCondVariable.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KError.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KEventObject.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KException.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KLockGuard.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KMutex.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KPthread.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\thread\KQueue.cpp">
+      <Filter>src\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwAgent.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwContext.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwContextCarrier.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwContextManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwContextSnapshot.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwDecorator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwDefine.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwHttpReporter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwSpan.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\util\KSingleton.hpp">
+      <Filter>include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\KStringUtility.h">
+      <Filter>include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\KTime.h">
+      <Filter>include\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KAny.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KAtomic.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KBuffer.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KCondVariable.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KError.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KEventObject.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KException.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KLockGuard.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KMutex.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KPthread.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\thread\KQueue.h">
+      <Filter>include\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwAgent.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwContext.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwContextCarrier.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwContextManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwContextSnapshot.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwDecorator.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwDefine.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwHeaders.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwHttpClient.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwHttpReporter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwSegment.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwSpan.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
