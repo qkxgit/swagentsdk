@@ -3,7 +3,7 @@
 
 SwBroker::SwBroker() 
 	:reporter(config.service, config.serviceInstance), 
-	klib::KEventObject<klib::KAny>("SwAgent Thread"),available(false), propsent(false)
+	klib::KEventObject<klib::KAny>("SwAgent Thread"),ready(false), propsent(false)
 {
 
 }
@@ -21,6 +21,7 @@ bool SwBroker::Start(const AgentConfig& c)
 		if (!reporter.Start(config.swhost))
 		{
 			klib::KEventObject<klib::KAny>::Stop();
+			klib::KEventObject<klib::KAny>::WaitForStop();
 			return false;
 		}
 		KeepAlive();
@@ -106,7 +107,7 @@ void SwBroker::KeepAlive()
 
 	std::string url = config.swhost + "/v3/management/keepAlive";
 	std::string resp;
-	if (!(available = SwHttpClient::HttpPost(url, jw.GetString(), resp)))
+	if (!(ready = SwHttpClient::HttpPost(url, jw.GetString(), resp)))
 		printf("%s error:[%s], url:[%s]\n", __FUNCTION__, resp.c_str(), url.c_str());
 
 	if (!klib::KEventObject<klib::KAny>::Post(AgentHeartbeat()))
@@ -145,7 +146,7 @@ bool SwAgent::Commit(const SwContext& ctx)
 	for (uint32_t i = 0; i < brokers.size(); ++i)
 	{
 		SwBroker* broker = brokers[i];
-		if (broker->IsAvailable() && broker->Commit(ctx))
+		if (broker->IsReady() && broker->Commit(ctx))
 			return true;
 	}
 	for (uint32_t i = 0; i < brokers.size(); ++i)
@@ -157,12 +158,12 @@ bool SwAgent::Commit(const SwContext& ctx)
 	return false;
 }
 
-bool SwAgent::IsAvailable() const
+bool SwAgent::IsReady() const
 {
 	klib::KLockGuard<klib::KMutex> lock(brokerMtx);
 	for (uint32_t i = 0; i < brokers.size(); ++i)
 	{
-		if (brokers[i]->IsAvailable())
+		if (brokers[i]->IsReady())
 			return true;
 	}
 	return false;

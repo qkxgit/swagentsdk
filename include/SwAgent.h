@@ -52,7 +52,8 @@ public:
 	SwBroker();	
 	virtual bool Start(const AgentConfig& c);
 	bool Commit(const SwContext& ctx);
-	bool IsAvailable() const { return available; }
+
+	virtual bool IsReady() const { return ready; }
 	virtual void Stop();
 	virtual void WaitForStop();
 	
@@ -67,7 +68,7 @@ private:
 	AgentConfig config;
 	SwHttpReporter reporter;
 	klib::KMutex agentMtx;
-	volatile bool available;
+	volatile bool ready;
 	volatile bool propsent;
 };
 
@@ -80,7 +81,7 @@ public:
 
 	bool Start(const AgentConfig& c);
 	bool Commit(const SwContext& ctx);
-	bool IsAvailable() const;
+	bool IsReady() const;
 	void Stop();
 	void WaitForStop();
 
