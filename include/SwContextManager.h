@@ -16,6 +16,8 @@ public:
 
 	static SwContextSnapshot Capture();
 
+	static SwSpan* ActiveSpan();
+
 	static void Continued(const SwContextSnapshot& snapShot);
 
 private:

@@ -62,6 +62,12 @@ SwContextSnapshot SwContextManager::Capture()
 	return SwContextSnapshot();
 }
 
+SwSpan* SwContextManager::ActiveSpan()
+{
+	SwContext& ctx = GetContext();
+	return ctx.ActiveSpan();
+}
+
 void SwContextManager::Continued(const SwContextSnapshot& snapShot)
 {
 	SwContext& ctx = GetContext();
