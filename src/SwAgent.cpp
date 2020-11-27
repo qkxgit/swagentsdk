@@ -30,11 +30,6 @@ bool SwBroker::Start(const AgentConfig& c)
 	return true;
 }
 
-bool SwBroker::Commit(const SwContext& ctx)
-{
-	return reporter.Post(ctx);
-}
-
 void SwBroker::Stop()
 {
 	klib::KLockGuard<klib::KMutex> lock(agentMtx);
@@ -49,6 +44,11 @@ void SwBroker::WaitForStop()
 {
 	klib::KEventObject<klib::KAny>::WaitForStop();
 	reporter.WaitForStop();
+}
+
+bool SwBroker::Commit(const SwContext& ctx)
+{
+	return reporter.Post(ctx);
 }
 
 void SwBroker::ProcessEvent(const klib::KAny& ev)
@@ -140,35 +140,6 @@ bool SwAgent::Start(const AgentConfig& c)
 	return rc;
 }
 
-bool SwAgent::Commit(const SwContext& ctx)
-{
-	klib::KLockGuard<klib::KMutex> lock(brokerMtx);
-	for (uint32_t i = 0; i < brokers.size(); ++i)
-	{
-		SwBroker* broker = brokers[i];
-		if (broker->IsReady() && broker->Commit(ctx))
-			return true;
-	}
-	for (uint32_t i = 0; i < brokers.size(); ++i)
-	{
-		SwBroker* broker = brokers[i];
-		if (broker->Commit(ctx))
-			return true;
-	}
-	return false;
-}
-
-bool SwAgent::IsReady() const
-{
-	klib::KLockGuard<klib::KMutex> lock(brokerMtx);
-	for (uint32_t i = 0; i < brokers.size(); ++i)
-	{
-		if (brokers[i]->IsReady())
-			return true;
-	}
-	return false;
-}
-
 void SwAgent::Stop()
 {
 	klib::KLockGuard<klib::KMutex> lock(brokerMtx);
@@ -186,4 +157,33 @@ void SwAgent::WaitForStop()
 		delete b;
 	}
 	brokers.clear();
+}
+
+bool SwAgent::IsReady() const
+{
+	klib::KLockGuard<klib::KMutex> lock(brokerMtx);
+	for (uint32_t i = 0; i < brokers.size(); ++i)
+	{
+		if (brokers[i]->IsReady())
+			return true;
+	}
+	return false;
+}
+
+bool SwAgent::Commit(const SwContext& ctx)
+{
+	klib::KLockGuard<klib::KMutex> lock(brokerMtx);
+	for (uint32_t i = 0; i < brokers.size(); ++i)
+	{
+		SwBroker* broker = brokers[i];
+		if (broker->IsReady() && broker->Commit(ctx))
+			return true;
+	}
+	for (uint32_t i = 0; i < brokers.size(); ++i)
+	{
+		SwBroker* broker = brokers[i];
+		if (broker->Commit(ctx))
+			return true;
+	}
+	return false;
 }

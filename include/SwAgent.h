@@ -50,18 +50,24 @@ class SwBroker:public klib::KEventObject<klib::KAny>, public SwHttpClient
 {
 public:
 	SwBroker();	
+	// 启动
 	virtual bool Start(const AgentConfig& c);
-	bool Commit(const SwContext& ctx);
-
-	virtual bool IsReady() const { return ready; }
+	// 停止
 	virtual void Stop();
+	// 等待停止
 	virtual void WaitForStop();
+	// 提交数据
+	bool Commit(const SwContext& ctx);
+	// 与skywalking服务端通信是否正常
+	virtual bool IsReady() const { return ready; }	
 	
 protected:
 	virtual void ProcessEvent(const klib::KAny& ev);
 
 private:
+	// 提交服务信息
 	void Properties(const std::string& service, const std::string& serviceInstance);
+	// 心跳
 	void KeepAlive() ;
 
 private:
@@ -80,10 +86,12 @@ public:
 	inline const std::string& GetLocalIp() const { return config.localIp; }
 
 	bool Start(const AgentConfig& c);
-	bool Commit(const SwContext& ctx);
-	bool IsReady() const;
 	void Stop();
 	void WaitForStop();
+	// 提交数据
+	bool Commit(const SwContext& ctx);
+	// 与skywalking服务端通信是否正常
+	bool IsReady() const;	
 
 private:
 	AgentConfig config;

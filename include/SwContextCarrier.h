@@ -10,6 +10,7 @@ public:
 	const SwData& GetData() const;
 	void SetData(const SwData& d);
 	void FromIce(const StringStringMap& ctx);
+	// ×ª»»³ÉIce Context
 	StringStringMap ToIce() const;
 	
 private:
