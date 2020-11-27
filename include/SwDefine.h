@@ -5,6 +5,28 @@
 #include <string>
 #include <stdint.h>
 
+#define RAPIDJSON_HAS_STDSTRING 1
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/document.h"
+
+class RapidJsonWriter :public rapidjson::Writer<rapidjson::StringBuffer>
+{
+public:
+	RapidJsonWriter()
+		:rapidjson::Writer<rapidjson::StringBuffer>(buffer)
+	{
+
+	}
+
+	void Reset() { buffer.Clear(); rapidjson::Writer<rapidjson::StringBuffer>::Reset(buffer); }
+
+	inline std::string GetString() const { return std::string(buffer.GetString(), buffer.GetSize()); }
+
+private:
+	rapidjson::StringBuffer buffer;
+};
+
 enum SwEnumSpanLayer
 {
 	LUnknown = 0,

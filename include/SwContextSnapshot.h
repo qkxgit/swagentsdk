@@ -5,13 +5,16 @@
 class SwContextSnapshot
 {
 public:
-	SwContextSnapshot();
+	SwContextSnapshot() {}
 
 	SwContextSnapshot(const std::string &traceId,
 		const std::string&segmentId,
 		int spanId,
 		const std::string& operationName,
 		const StringStringMap & correlation);
+
+	void Serialize(std::string& r);
+	bool Parse(const std::string& s);
 
 	bool IsValid() const;
 

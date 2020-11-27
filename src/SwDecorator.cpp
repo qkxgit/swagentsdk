@@ -3,8 +3,8 @@
 template<>
 void SetCarrier<StringStringMap>(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t)
 {
-	if (k == Exit)
-		t = c;
+	if (k == Exit && !c.empty())
+		t.insert(c.begin(), c.end());
 }
 
 SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapshot& ss)
