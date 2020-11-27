@@ -137,10 +137,10 @@ struct SwParameter
 };
 
 template<typename T>
-void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, T& t)
-{
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, T& t) {}
 
-}
+template<typename T>
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, const T& t) {}
 
 template<>
 void SetCarrier<StringStringMap>(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t);
