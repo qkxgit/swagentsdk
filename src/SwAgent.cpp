@@ -131,6 +131,7 @@ bool SwAgent::Start(const AgentConfig& c)
 				break;
 			}
 		}
+		config = c;
 	}
 	if (!rc)
 	{
