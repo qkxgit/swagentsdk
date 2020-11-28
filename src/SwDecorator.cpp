@@ -1,11 +1,22 @@
 #include "SwDecorator.h"
 
 template<>
-void SetCarrier<StringStringMap>(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t)
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, const StringStringMap& t)
+{
+	if (k == Exit && !c.empty())
+	{
+		StringStringMap& m = const_cast<StringStringMap&>(t);
+		m.insert(c.begin(), c.end());
+	}
+}
+
+template<>
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t)
 {
 	if (k == Exit && !c.empty())
 		t.insert(c.begin(), c.end());
 }
+
 
 SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapshot& ss)
 {

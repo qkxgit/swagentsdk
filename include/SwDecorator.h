@@ -136,11 +136,19 @@ struct SwParameter
 	}
 };
 
-template<typename T>
-void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, T& t) {}
+
+
+template<typename ArgType>
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, const ArgType& t) {}
 
 template<>
-void SetCarrier<StringStringMap>(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t);
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, const StringStringMap& t);
+
+template<typename ArgType>
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, ArgType& t) {}
+
+template<>
+void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t);
 
 SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapshot& ss);
 
@@ -228,7 +236,7 @@ public:\
 		assert(IsValid());\
 		RetType rc = RetType();\
 		StartSpan(dat, snapshot)\
-		SetCarrier<Jv(Arg, ArgCount)>(dat.kind, ctx, Jv(arg, ArgCount));\
+		SetCarrier(dat.kind, ctx, Jv(arg, ArgCount));\
 		rc = InnerCaller(Jv(ActualParam,ArgCount));\
 		FinishSpan(dat.operationName)\
 		return rc;\
@@ -364,7 +372,7 @@ public:\
 	{\
 		assert(IsValid());\
 		StartSpan(dat, snapshot)\
-		SetCarrier<Jv(Arg, ArgCount)>(dat.kind, ctx, Jv(arg, ArgCount));\
+		SetCarrier(dat.kind, ctx, Jv(arg, ArgCount));\
 		InnerCaller(Jv(ActualParam,ArgCount));\
 		FinishSpan(dat.operationName)\
 	}\
@@ -493,7 +501,7 @@ public:\
 		assert(IsValid());\
 		RetType rc = RetType();\
 		StartSpan(dat, snapshot)\
-		SetCarrier<Jv(Arg, ArgCount)>(dat.kind, ctx, Jv(arg, ArgCount));\
+		SetCarrier(dat.kind, ctx, Jv(arg, ArgCount));\
 		rc = InnerCaller(Jv(ActualParam,ArgCount));\
 		FinishSpan(dat.operationName)\
 		return rc;\
@@ -593,7 +601,7 @@ public:\
 	{\
 		assert(IsValid());\
 		StartSpan(dat, snapshot)\
-		SetCarrier<Jv(Arg, ArgCount)>(dat.kind, ctx, Jv(arg, ArgCount));\
+		SetCarrier(dat.kind, ctx, Jv(arg, ArgCount));\
 		InnerCaller(Jv(ActualParam,ArgCount));\
 		FinishSpan(dat.operationName)\
 	}\
