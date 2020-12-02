@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "SwContext.h"
 #include "SwSpan.h"
 #include "SwAgent.h"

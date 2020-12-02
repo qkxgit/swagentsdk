@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cstring>
 #include <iostream>
+#include <stdexcept>
 namespace klib {
     /*
     该类可以用来存储任意数据类型

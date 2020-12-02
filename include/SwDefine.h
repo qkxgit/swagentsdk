@@ -52,13 +52,21 @@ typedef std::map<std::string, std::string> StringStringMap;
 // 数据
 struct SwData
 {
+	// trace id
 	std::string traceId;
+	// segment id
 	std::string segmentId;
+	// span id
 	int spanId;
+	// 服务名称
 	std::string service;
+	// 服务实例名称
 	std::string serviceInstance;
+	// 操作
 	std::string endpoint;
+	// 对端
 	std::string networkAddressUsedAtPeer;
+	// 关联信息
 	StringStringMap correlation;
 
 	SwData() :spanId(-1) {}
