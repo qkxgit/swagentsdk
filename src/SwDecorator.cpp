@@ -36,13 +36,15 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapsh
 	{
 		SwContextCarrier carrier;
 		span = SwContextManager::CreateExitSpan(dat.operationName, dat.peer, carrier);
-		ctx = carrier.ToIceContext();
 		span->SetTags(dat.tags);
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
 		span->Start();
 		if (dat.snapshot.IsValid())
 			SwContextManager::Continued(dat.snapshot);
+		span->Inject(carrier);
+		ctx = carrier.ToIceContext();
+		span->SetTag("traceId", ctx["traceId"]);
 		break;
 	}
 	default:
