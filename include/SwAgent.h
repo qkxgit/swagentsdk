@@ -4,7 +4,16 @@
 #include <string>
 #include <vector>
 
-struct AgentConfig;
+struct AgentConfig
+{
+	std::string swhost;
+	std::string localIp;
+	std::string service;
+	std::string serviceInstance;
+
+	AgentConfig() {}
+	AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance);
+};
 class SwSegment;
 class SwHttpReporter;
 class SwHttpClient;

@@ -27,8 +27,7 @@ bool SwContext::Stop(SwSpan* span)
 	if (span->Finish())
 		spans.erase(it);
 
-	bool rc = spans.empty();
-	if (rc)
+	if (spans.empty())
 	{
 		if (!SwInst.Commit(segment))
 		{
@@ -46,9 +45,10 @@ bool SwContext::Stop(SwSpan* span)
 		sid = -1;
 		correlation.clear();
 		segment = SwSegment();
+		return true;
 	}
-
-	return rc;
+	printf("Stop span failed\n");
+	return false;
 }
 
 SwSpan* SwContext::ActiveSpan()

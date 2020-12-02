@@ -33,21 +33,11 @@ struct AgentProperties
 	std::string serviceInstance;
 };
 
-struct AgentConfig
+AgentConfig::AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance)
+	:swhost(swhost), localIp(localIp), service(service), serviceInstance(serviceInstance)
 {
-	std::string swhost;
-	std::string localIp;
-	std::string service;
-	std::string serviceInstance;
 
-	AgentConfig() {}
-
-	AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance)
-		:swhost(swhost), localIp(localIp), service(service), serviceInstance(serviceInstance)
-	{
-
-	}
-};
+}
 
 class RapidJsonWriter :public rapidjson::Writer<rapidjson::StringBuffer>
 {
