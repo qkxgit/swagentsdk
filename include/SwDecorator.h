@@ -132,7 +132,7 @@ struct SwParameter
 	SwParameter(const std::string& op, const StringStringMap& c)
 		:operationName(op), kind(Entry), component(rpc), layer(RPCFramework)
 	{
-		carrier.FromIce(c);
+		carrier.FromIceContext(c);
 	}
 };
 
@@ -162,17 +162,17 @@ try\
 }\
 catch (const std::exception& e)\
 {\
-	span->SetException(op, e.what());\
-	span->Finish();\
+	span->SetError(op, e.what());\
+	span->Stop();\
 	throw;\
 }\
 catch (...)\
 {\
-	span->SetException(op, "unknown exception");\
-	span->Finish();\
+	span->SetError(op, "unknown exception");\
+	span->Stop();\
 	throw;\
 }\
-span->Finish();
+span->Stop();
 
 Template0
 class SwDecorator0

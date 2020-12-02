@@ -4,6 +4,8 @@
 #include "SwDefine.h"
 class SwContextSnapshot
 {
+	friend class SwSegmentRef;
+	friend class SwContextManager;
 public:
 	SwContextSnapshot() {}
 
@@ -18,8 +20,6 @@ public:
 	bool Parse(const std::string& s);
 	// 是否有效的快照
 	bool IsValid() const;
-	// 获取数据
-	const SwData& GetData() const;
 
 private:
 	SwData dat;

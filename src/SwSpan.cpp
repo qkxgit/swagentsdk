@@ -6,9 +6,27 @@ SwSpan::SwSpan(SwContext& ctx, const std::string& op, SwEnumSpanKind k)
 	:ctx(ctx), operationName(op), kind(k),component(rpc), layer(RPCFramework),
 	errorOcurred(false),startTime(0),endTime(0)
 {
-	spanId = ctx.IncreSpanId();
+	spanId = ctx.NextSpanId();
 	SwSpan* span = ctx.ActiveSpan();
-	parentSpanId = (span ? span->GetSpanId() : -1);
+	parentSpanId = (span ? span->spanId : -1);
+}
+
+void SwSpan::Start()
+{
+	klib::KTime::NowMillisecond(startTime);
+	ctx.Start(this);
+}
+
+bool SwSpan::Stop()
+{
+	return ctx.Stop(this);
+}
+
+bool SwSpan::Finish()
+{
+	klib::KTime::NowMillisecond(endTime);
+	ctx.segment.Archive(this);
+	return true;
 }
 
 void SwSpan::AppendLog(const std::string& key, const std::string& value)
@@ -19,74 +37,83 @@ void SwSpan::AppendLog(const std::string& key, const std::string& value)
 	logs.push_back(lg);
 }
 
-void SwSpan::Start()
+void SwSpan::SetError(const std::string& key, const std::string& value)
 {
-	klib::KTime::NowMillisecond(startTime);
-	ctx.Start(this);
+	errorOcurred = true; AppendLog(key, value);
 }
 
-void SwSpan::Finish()
+void SwSpan::Extract(const SwContextCarrier& carrier)
 {
-	klib::KTime::NowMillisecond(endTime);
-	ctx.Finish(this);
+	if (carrier.IsValid())
+	{
+		ctx.correlation = carrier.dat.correlation;
+		ctx.segment.Relate(carrier.dat.traceId);
+	}
+}
+
+
+SwStackedSpan::SwStackedSpan(SwContext& ctx, SwEnumSpanKind k, const std::string& op, const std::string& p)
+	:SwSpan(ctx, op, k),depth(0)
+{
+	peer = p;
 }
 
 SwEntrySpan::SwEntrySpan(SwContext& ctx, const std::string& op) 
-	:SwSpan(ctx, op, Entry), maxDepth(0)
+	:SwStackedSpan(ctx, Entry, op, std::string())
 {
 
 }
 
 void SwEntrySpan::Start()
 {
-	maxDepth = ctx.IncreDepth();
-	if (maxDepth == 1)
-		SwSpan::Start();
+	depth = ++ctx.depth;
+	if (depth == 1)
+		SwStackedSpan::Start();
 }
 
-void SwEntrySpan::Finish()
+bool SwEntrySpan::Finish()
 {
-	maxDepth = ctx.DecreDepth();
-	if (maxDepth == 0)
-		SwSpan::Finish();
+	return (--ctx.depth == 0) && SwSpan::Finish();
 }
 
 void SwEntrySpan::Extract(const SwContextCarrier& carrier)
 {
-	SwSegmentRef ref(carrier);
-	refs.push_back(ref);
-	ctx.SetCorrelation(carrier.GetData().correlation);
-	ctx.Relate(ref);
+	if (carrier.IsValid())
+	{
+		SwSpan::Extract(carrier);
+		SwSegmentRef ref(carrier);
+		if (std::find(refs.begin(), refs.end(), ref) == refs.end())
+			refs.push_back(ref);
+	}
 }
 
-SwExitSpan::SwExitSpan(SwContext& seg, const std::string& op, const std::string& p) 
-	:SwSpan(seg, op, Exit)
+SwExitSpan::SwExitSpan(SwContext& ctx, const std::string& op, const std::string& p)
+	:SwStackedSpan(ctx, Exit, op, p)
 {
-	peer = p;
+	
 }
 
 void SwExitSpan::Start()
 {
-	ctx.IncreDepth();
-	SwSpan::Start();
+	depth = ++ctx.depth;
+	SwStackedSpan::Start();
 }
 
-void SwExitSpan::Finish()
+bool SwExitSpan::Finish()
 {
-	ctx.DecreDepth();
-	SwSpan::Finish();
+	return (ctx.depth-- == depth) && SwSpan::Finish();
 }
 
 void SwExitSpan::Inject(SwContextCarrier& carrier)
 {
-	SwData dat;
-	dat.traceId = ctx.GetTraceId();
-	dat.segmentId = ctx.GetSegmentId();
-	dat.spanId = ctx.GetSpanId();
-	dat.service = AgentInst::GetRef().GetService();//
-	dat.serviceInstance = AgentInst::GetRef().GetServiceInstance();//
-	dat.endpoint = operationName;
-	dat.networkAddressUsedAtPeer = peer;
-	dat.correlation = ctx.GetCorrelation();
-	carrier.SetData(dat);
+	carrier.dat.traceId = ctx.segment.relatedTraceIds[0];
+	carrier.dat.segmentId = ctx.segment.segmentId;
+	carrier.dat.spanId = spanId;
+	carrier.dat.service = AgentInst::GetRef().GetService();//
+	carrier.dat.serviceInstance = AgentInst::GetRef().GetServiceInstance();//
+	carrier.dat.endpoint = operationName;
+	carrier.dat.networkAddressUsedAtPeer = peer;
+	carrier.dat.correlation = ctx.correlation;
 }
+
+

@@ -2,7 +2,7 @@
 #include "SwSpan.h"
 
 SwHttpReporter::SwHttpReporter(const std::string& service, const std::string& serviceInstance)
-	:klib::KEventObject<SwContext>("SwHttpReporter Thread", 2000), service(service), serviceInstance(serviceInstance), counter(0)
+	:klib::KEventObject<SwSegment>("SwHttpReporter Thread", 2000), service(service), serviceInstance(serviceInstance), counter(0)
 {
 
 }
@@ -10,15 +10,16 @@ SwHttpReporter::SwHttpReporter(const std::string& service, const std::string& se
 bool SwHttpReporter::Start(const std::string& host)
 {
 	this->host = host;
-	return klib::KEventObject<SwContext>::Start();
+	return klib::KEventObject<SwSegment>::Start();
 }
 
-void SwHttpReporter::ProcessEvent(const SwContext& ev)
+void SwHttpReporter::ProcessEvent(const SwSegment& seg)
 {
 	RapidJsonWriter jw;
-	WriteJson(ev, jw);
+	WriteJson(seg, jw);
 	std::string url = host + "/v3/segment";
 	std::string resp;
+	// "/v3/segments"
 	if (!SwHttpClient::HttpPost(url, jw.GetString(), resp))
 		printf("%s error:[%s], url:[%s]\n", __FUNCTION__, resp.c_str(), url.c_str());
 }
@@ -58,35 +59,17 @@ std::string SwHttpReporter::LayerToString(SwEnumSpanLayer layer) const
 	}
 }
 
-void SwHttpReporter::BatchCommit(const SwContext& ctx, RapidJsonWriter& jw)
-{
-	if (counter++ == 0)
-		jw.StartArray();
-	WriteJson(ctx, jw);
-	if (counter == 100)
-	{
-		jw.EndArray();
-		counter = 0;
-		std::string url = host + "/v3/segments";
-		std::string resp;
-		if (!SwHttpClient::HttpPost(url, jw.GetString(), resp))
-			printf("%s error:[%s]\n", __FUNCTION__, resp.c_str());
-		jw.Reset();
-	}
-}
-
-void SwHttpReporter::WriteJson(const SwContext& ctx, RapidJsonWriter& jw)
+void SwHttpReporter::WriteJson(const SwSegment& seg, RapidJsonWriter& jw)
 {
 	jw.StartObject();
-	jw.Key(SwConstTraceId); jw.String(ctx.GetTraceId());
-	jw.Key(SwConstSegmentId); jw.String(ctx.GetSegmentId());
+	jw.Key(SwConstTraceId); jw.String(seg.relatedTraceIds[0]);
+	jw.Key(SwConstSegmentId); jw.String(seg.segmentId);
 	jw.Key(SwConstService); jw.String(service);
 	jw.Key(SwConstServiceInstance); jw.String(serviceInstance);
 	jw.Key("spans");
 	jw.StartArray();
-	std::vector<SwSpan*> spans = ctx.GetSpans();
-	std::vector<SwSpan*>::const_iterator it = spans.begin();
-	while (it != spans.end())
+	std::vector<SwSpan*>::const_iterator it = seg.spans.begin();
+	while (it != seg.spans.end())
 	{
 		SwSpan* span = *it;
 		jw.StartObject();
@@ -154,9 +137,9 @@ void SwHttpReporter::WriteJson(const SwContext& ctx, RapidJsonWriter& jw)
 			std::vector<SwSegmentRef>::const_iterator sit = refs.begin();
 			while (sit != refs.end())
 			{
-				const SwData& dat = sit->GetData();
+				const SwData& dat = sit->dat;
 				jw.StartObject();
-				jw.Key("refType"); jw.Int(sit->GetRefType().compare("CrossProcess") == 0 ? 0 : 1);
+				jw.Key("refType"); jw.Int(sit->refType.compare("CrossProcess") == 0 ? 0 : 1);
 				jw.Key(SwConstTraceId); jw.String(dat.traceId);
 				jw.Key("parentTraceSegmentId"); jw.String(dat.segmentId);
 				jw.Key("parentSpanId"); jw.Int(dat.spanId);

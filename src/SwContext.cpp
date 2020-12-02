@@ -1,30 +1,38 @@
 #include "SwContext.h"
 #include "SwSpan.h"
 #include "SwAgent.h"
-#include <IceUtil/UUID.h>
-#include "util/KTime.h"
-#include "util/KStringUtility.h"
-void SwContext::Start(SwSpan* span)
+#include "SwContextManager.h"
+
+SwContext::SwContext()
+	:sid(-1),depth(0)
 {
-	if (span && std::find(activeSpanStack.begin(), activeSpanStack.end(), span) == activeSpanStack.end())
-		activeSpanStack.push_back(span);
+
 }
 
-void SwContext::Finish(SwSpan* span)
+SwContext::~SwContext()
 {
-	SwSpan* s = ActiveSpan();
-	assert(s == span);
-	activeSpanStack.pop_back();
 
-	if (std::find(archiveSpanStack.begin(), archiveSpanStack.end(), span) == archiveSpanStack.end())
-		archiveSpanStack.push_back(span);
+}
 
-	if (activeSpanStack.empty())
+void SwContext::Start(SwSpan* span)
+{
+	if (span && std::find(spans.begin(), spans.end(), span) == spans.end())
+		spans.push_back(span);
+}
+
+bool SwContext::Stop(SwSpan* span)
+{
+	std::vector<SwSpan*>::iterator it = std::find(spans.begin(), spans.end(), span);
+	if (span->Finish())
+		spans.erase(it);
+
+	bool rc = spans.empty();
+	if (rc)
 	{
-		if (!AgentInst::GetRef().Commit(*this))
+		if (!AgentInst::GetRef().Commit(segment))
 		{
-			std::vector<SwSpan*>::iterator it = archiveSpanStack.begin();
-			while (it != archiveSpanStack.end())
+			std::vector<SwSpan*>::iterator it = segment.spans.begin();
+			while (it != segment.spans.end())
 			{
 				SwSpan* span = *it;
 				delete span;
@@ -33,48 +41,23 @@ void SwContext::Finish(SwSpan* span)
 			printf("Commit segment failed\n");
 			// clear span
 		}
-		Cleanup();
+		depth = 0;
+		sid = -1;
+		correlation.clear();
+		segment = SwSegment();
 	}
+
+	return rc;
 }
-
-void SwContext::Initialize()
-{
-	if (activeSpanStack.empty())
-	{
-		klib::KTime::NowMillisecond(timestamp);
-
-		segmentId = IceUtil::generateUUID();
-		segmentId.erase(std::remove(segmentId.begin(), segmentId.end(), '-'), segmentId.end());
-
-		traceId = IceUtil::generateUUID();
-		traceId.erase(std::remove(traceId.begin(), traceId.end(), '-'), traceId.end());
-	}
-}
-
-
-void SwContext::Cleanup()
-{
-	spanId = -1;
-	depth = 0;
-	timestamp = 0;
-	segmentId = std::string();
-	traceId = std::string();
-	correlation.clear();
-	archiveSpanStack.clear();
-	activeSpanStack.clear();
-}
-
 
 SwSpan* SwContext::ActiveSpan()
 {
-	if (activeSpanStack.empty())
+	if (spans.empty())
 		return NULL;
-	return activeSpanStack[activeSpanStack.size() - 1];
+	return spans[spans.size() - 1];
 }
 
-SwSpan* SwContext::EntrySpan()
+int32_t SwContext::NextSpanId()
 {
-	if (activeSpanStack.empty())
-		return NULL;
-	return activeSpanStack[0];
+	return ++sid;
 }

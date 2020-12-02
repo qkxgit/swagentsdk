@@ -46,9 +46,9 @@ void SwBroker::WaitForStop()
 	reporter.WaitForStop();
 }
 
-bool SwBroker::Commit(const SwContext& ctx)
+bool SwBroker::Commit(const SwSegment& seg)
 {
-	return reporter.Post(ctx);
+	return reporter.Post(seg);
 }
 
 void SwBroker::ProcessEvent(const klib::KAny& ev)
@@ -171,19 +171,19 @@ bool SwAgent::IsReady() const
 	return false;
 }
 
-bool SwAgent::Commit(const SwContext& ctx)
+bool SwAgent::Commit(const SwSegment& seg)
 {
 	klib::KLockGuard<klib::KMutex> lock(brokerMtx);
 	for (uint32_t i = 0; i < brokers.size(); ++i)
 	{
 		SwBroker* broker = brokers[i];
-		if (broker->IsReady() && broker->Commit(ctx))
+		if (broker->IsReady() && broker->Commit(seg))
 			return true;
 	}
 	for (uint32_t i = 0; i < brokers.size(); ++i)
 	{
 		SwBroker* broker = brokers[i];
-		if (broker->Commit(ctx))
+		if (broker->Commit(seg))
 			return true;
 	}
 	return false;

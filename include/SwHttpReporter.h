@@ -8,7 +8,7 @@
 #include "SwContext.h"
 #include "SwHttpClient.hpp"
 
-class SwHttpReporter :public klib::KEventObject<SwContext>, public SwHttpClient
+class SwHttpReporter :public klib::KEventObject<SwSegment>, public SwHttpClient
 {
 public:
 	SwHttpReporter(const std::string &service, const std::string &serviceInstance);
@@ -16,13 +16,12 @@ public:
 	virtual bool Start(const std::string& host);
 
 protected:
-	virtual void ProcessEvent(const SwContext& ev);
+	virtual void ProcessEvent(const SwSegment& seg);
 
 private:
 	std::string KindToString(SwEnumSpanKind kind) const;
 	std::string LayerToString(SwEnumSpanLayer layer) const;
-	void BatchCommit(const SwContext& ctx, RapidJsonWriter& jw);
-	void WriteJson(const SwContext& ctx, RapidJsonWriter& jw);
+	void WriteJson(const SwSegment& seg, RapidJsonWriter& jw);
 
 private:
 	std::string host;

@@ -1,32 +1,28 @@
 #include <assert.h>
 #include "thread/KPthread.h"
 #include "SwContextManager.h"
-#include "SwContext.h"
+
 #include "SwSpan.h"
 #include "SwContextSnapshot.h"
 #include "SwContextCarrier.h"
 
-SwContext& SwContextManager::GetContext()
-{
-	static klib::KMutex ctxMtx;
-	static std::map<uint32_t, SwContext> threadCtxMap;
+klib::KMutex SwContextManager::ctxMtx;
 
-	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
-	uint32_t id = klib::KPthread::GetThreadId();
-	SwContext& c = threadCtxMap[id];
-	c.Initialize();
-	return c;
-}
+std::map<uint32_t, SwContext> SwContextManager::threadCtxMap;
 
 SwSpan* SwContextManager::CreateLocalSpan(const std::string& operationName)
 {
-	SwContext& ctx = GetContext();
+	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
+	uint32_t id = klib::KPthread::GetThreadId();
+	SwContext& ctx = threadCtxMap[id];
 	return new SwSpan(ctx, operationName);
 }
 
 SwSpan* SwContextManager::CreateEntrySpan(const std::string& operationName, const SwContextCarrier& carrier)
 {
-	SwContext& ctx = GetContext();
+	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
+	uint32_t id = klib::KPthread::GetThreadId();
+	SwContext& ctx = threadCtxMap[id];
 	SwSpan* entrySpan = NULL;
 	SwSpan* parentSpan = ctx.ActiveSpan();
 	if (parentSpan && parentSpan->IsEntry())
@@ -40,7 +36,9 @@ SwSpan* SwContextManager::CreateEntrySpan(const std::string& operationName, cons
 
 SwSpan* SwContextManager::CreateExitSpan(const std::string& operationName, const std::string& peer, SwContextCarrier& carrier)
 {
-	SwContext& ctx = GetContext();
+	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
+	uint32_t id = klib::KPthread::GetThreadId();
+	SwContext& ctx = threadCtxMap[id];
 	SwSpan* exitSpan = NULL;
 	SwSpan* parentSpan = ctx.ActiveSpan();
 	if (parentSpan && parentSpan->IsExit())
@@ -51,35 +49,55 @@ SwSpan* SwContextManager::CreateExitSpan(const std::string& operationName, const
 	return exitSpan;
 }
 
-SwContextSnapshot SwContextManager::Capture()
+SwContextSnapshot SwContextManager::CaptureInner(SwContext& ctx)
 {
-	SwContext& ctx = GetContext();
 	SwSpan* a = ctx.ActiveSpan();
-	SwSpan* b = ctx.EntrySpan();
-	if (a && b)
-		return SwContextSnapshot(ctx.GetTraceId(), ctx.GetSegmentId(), a->GetSpanId(),
-			b->GetOperationName(), ctx.GetCorrelation());
+	if (a)
+		return SwContextSnapshot(ctx.segment.relatedTraceIds[0], ctx.segment.segmentId, a->GetSpanId(),
+			a->GetOperationName(), ctx.correlation);
 	return SwContextSnapshot();
 }
 
-SwSpan* SwContextManager::ActiveSpan()
+bool SwContextManager::IsFromCurrent(const SwContextSnapshot& snapshot, SwContext& ctx)
 {
-	SwContext& ctx = GetContext();
-	return ctx.ActiveSpan();
+	return !snapshot.dat.segmentId.empty() && snapshot.dat.segmentId == CaptureInner(ctx).dat.segmentId;
+}
+
+SwContextSnapshot SwContextManager::Capture()
+{
+	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
+	uint32_t id = klib::KPthread::GetThreadId();
+	SwContext& ctx = threadCtxMap[id];
+	return CaptureInner(ctx);
 }
 
 void SwContextManager::Continued(const SwContextSnapshot& snapShot)
 {
-	SwContext& ctx = GetContext();
-	const SwData& dat = snapShot.GetData();
-	if (!(!dat.segmentId.empty() && ctx.GetSegmentId() == dat.segmentId)
-		&& snapShot.IsValid())
+	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
+	uint32_t id = klib::KPthread::GetThreadId();
+	SwContext& ctx = threadCtxMap[id];
+	if (snapShot.IsValid() && !IsFromCurrent(snapShot,ctx))
 	{
 		SwSegmentRef ref(snapShot);
 		SwSpan* span = ctx.ActiveSpan();
 		assert(span != NULL);
-		span->AppendRefs(ref);
-		ctx.Relate(ref);
-		ctx.SetCorrelation(dat.correlation);
+		span->AppendRef(ref);
+		ctx.segment.Relate(ref.dat.traceId);
+		ctx.correlation = snapShot.dat.correlation;
 	}
+}
+
+SwSpan* SwContextManager::ActiveSpan()
+{
+	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
+	uint32_t id = klib::KPthread::GetThreadId();
+	SwContext& ctx = threadCtxMap[id];
+	return ctx.ActiveSpan();
+}
+
+void SwContextManager::DestroyContext()
+{
+	klib::KLockGuard<klib::KMutex> lock(ctxMtx);
+	uint32_t id = klib::KPthread::GetThreadId();
+	threadCtxMap.erase(id);
 }

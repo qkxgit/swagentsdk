@@ -88,8 +88,3 @@ bool SwContextSnapshot::IsValid() const
 		&& !dat.segmentId.empty()
 		&& dat.spanId > -1;
 }
-
-const SwData& SwContextSnapshot::GetData() const
-{
-	return dat;
-}

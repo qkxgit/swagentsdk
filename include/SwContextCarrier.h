@@ -5,13 +5,15 @@
 
 class SwContextCarrier
 {
+	friend class SwSegmentRef;
+	friend class SwSpan;
+	friend class SwExitSpan;
 public:
 	bool IsValid() const;
-	const SwData& GetData() const;
-	void SetData(const SwData& d);
-	void FromIce(const StringStringMap& ctx);
-	// 转换成Ice Context
-	StringStringMap ToIce() const;
+	// Ice Context 转换成 carrier
+	void FromIceContext(const StringStringMap& ctx);
+	// carrier 转换成Ice Context
+	StringStringMap ToIceContext() const;
 	
 private:
 	SwData dat;

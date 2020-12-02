@@ -39,8 +39,8 @@ struct AgentConfig
 
 	AgentConfig(){}
 
-	AgentConfig(const std::string& swh, const std::string& lip, const std::string& s, const std::string& si)
-		:swhost(swh),localIp(lip),service(s),serviceInstance(si)
+	AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance)
+		:swhost(swhost),localIp(localIp),service(service),serviceInstance(serviceInstance)
 	{
 
 	}
@@ -57,7 +57,7 @@ public:
 	// 等待停止
 	virtual void WaitForStop();
 	// 提交数据
-	bool Commit(const SwContext& ctx);
+	bool Commit(const SwSegment& seg);
 	// 与skywalking服务端通信是否正常
 	virtual bool IsReady() const { return ready; }	
 	
@@ -89,7 +89,7 @@ public:
 	void Stop();
 	void WaitForStop();
 	// 提交数据
-	bool Commit(const SwContext& ctx);
+	bool Commit(const SwSegment& seg);
 	// 与skywalking服务端通信是否正常
 	bool IsReady() const;	
 

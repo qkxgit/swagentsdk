@@ -79,11 +79,7 @@ struct SwData
 	std::string networkAddressUsedAtPeer;
 	StringStringMap correlation;
 
-	SwData()
-		:spanId(-1)
-	{
-
-	}
+	SwData() :spanId(-1) {}
 
 	bool operator==(const SwData& r) const
 	{

@@ -10,20 +10,11 @@ bool SwContextCarrier::IsValid() const
 		&& !dat.service.empty()
 		&& !dat.serviceInstance.empty()
 		&& !dat.endpoint.empty()
-		&& !dat.networkAddressUsedAtPeer.empty();
+		&& !dat.networkAddressUsedAtPeer.empty()
+		&& dat.spanId > -1;
 }
 
-const SwData& SwContextCarrier::GetData() const
-{
-	return dat;
-}
-
-void SwContextCarrier::SetData(const SwData& d)
-{
-	dat = d;
-}
-
-void SwContextCarrier::FromIce(const StringStringMap& ctx)
+void SwContextCarrier::FromIceContext(const StringStringMap& ctx)
 {
 	StringStringMap::const_iterator it = ctx.begin();
 	while (it != ctx.end())
@@ -48,7 +39,7 @@ void SwContextCarrier::FromIce(const StringStringMap& ctx)
 	}
 }
 
-StringStringMap SwContextCarrier::ToIce() const
+StringStringMap SwContextCarrier::ToIceContext() const
 {
 	StringStringMap ctx;
 	ctx[SwConstTraceId] = dat.traceId;

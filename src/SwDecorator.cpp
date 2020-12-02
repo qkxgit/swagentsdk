@@ -36,7 +36,7 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapsh
 	{
 		SwContextCarrier carrier;
 		span = SwContextManager::CreateExitSpan(dat.operationName, dat.peer, carrier);
-		ctx = carrier.ToIce();
+		ctx = carrier.ToIceContext();
 		span->SetTags(dat.tags);
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
