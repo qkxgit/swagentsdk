@@ -105,10 +105,10 @@
     <ClCompile Include="src\SwSegment.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SwHttpReporter.cpp">
+    <ClCompile Include="src\http\SwHttpClient.cpp">
       <Filter>src\http</Filter>
     </ClCompile>
-    <ClCompile Include="src\SwHttpClient.cpp">
+    <ClCompile Include="src\http\SwHttpReporter.cpp">
       <Filter>src\http</Filter>
     </ClCompile>
   </ItemGroup>
@@ -185,10 +185,10 @@
     <ClInclude Include="include\SwSegment.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\SwHttpClient.h">
+    <ClInclude Include="include\http\SwHttpClient.h">
       <Filter>include\http</Filter>
     </ClInclude>
-    <ClInclude Include="include\SwHttpReporter.h">
+    <ClInclude Include="include\http\SwHttpReporter.h">
       <Filter>include\http</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\http\SwHttpClient.cpp" />
+    <ClCompile Include="src\http\SwHttpReporter.cpp" />
     <ClCompile Include="src\SwAgent.cpp" />
     <ClCompile Include="src\SwContext.cpp" />
     <ClCompile Include="src\SwContextCarrier.cpp" />
@@ -26,8 +28,6 @@
     <ClCompile Include="src\SwContextSnapshot.cpp" />
     <ClCompile Include="src\SwDecorator.cpp" />
     <ClCompile Include="src\SwDefine.cpp" />
-    <ClCompile Include="src\SwHttpClient.cpp" />
-    <ClCompile Include="src\SwHttpReporter.cpp" />
     <ClCompile Include="src\SwSegment.cpp" />
     <ClCompile Include="src\SwSpan.cpp" />
     <ClCompile Include="src\thread\KAny.cpp" />
@@ -45,6 +45,8 @@
     <ClCompile Include="src\util\KTime.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\http\SwHttpClient.h" />
+    <ClInclude Include="include\http\SwHttpReporter.h" />
     <ClInclude Include="include\SwAgent.h" />
     <ClInclude Include="include\SwContext.h" />
     <ClInclude Include="include\SwContextCarrier.h" />
@@ -53,8 +55,6 @@
     <ClInclude Include="include\SwDecorator.h" />
     <ClInclude Include="include\SwDefine.h" />
     <ClInclude Include="include\SwHeaders.h" />
-    <ClInclude Include="include\SwHttpClient.h" />
-    <ClInclude Include="include\SwHttpReporter.h" />
     <ClInclude Include="include\SwSegment.h" />
     <ClInclude Include="include\SwSpan.h" />
     <ClInclude Include="include\thread\KAny.h" />

@@ -1,11 +1,8 @@
 #ifndef __SWHTTPREPORTER__
 #define __SWHTTPREPORTER__
 
-
 #include <string>
-
 #include "SwContext.h"
-
 
 class RapidJsonWriter;
 namespace klib {

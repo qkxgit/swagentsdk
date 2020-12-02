@@ -1,6 +1,6 @@
-#include "SwHttpReporter.h"
+#include "http/SwHttpReporter.h"
 #include "SwSpan.h"
-#include "SwHttpClient.h"
+#include "http/SwHttpClient.h"
 #include "thread/KQueue.h"
 #include "thread/KPthread.h"
 

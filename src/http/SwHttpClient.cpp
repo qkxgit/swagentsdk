@@ -1,6 +1,7 @@
-#include "SwHttpClient.h"
-#include "SwDefine.h"
+#include "http/SwHttpClient.h"
 #include <curl/curl.h>
+#include "SwDefine.h"
+
 bool SwHttpClient::HttpPost(const std::string& url, const std::string& dat, std::string& resp) const
 {
 	//printf("data:[%s]\n", dat.c_str());
