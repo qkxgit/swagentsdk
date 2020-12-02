@@ -5,28 +5,7 @@
 #include <string>
 #include <stdint.h>
 
-#define RAPIDJSON_HAS_STDSTRING 1
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/document.h"
-
-class RapidJsonWriter :public rapidjson::Writer<rapidjson::StringBuffer>
-{
-public:
-	RapidJsonWriter()
-		:rapidjson::Writer<rapidjson::StringBuffer>(buffer)
-	{
-
-	}
-
-	void Reset() { buffer.Clear(); rapidjson::Writer<rapidjson::StringBuffer>::Reset(buffer); }
-
-	inline std::string GetString() const { return std::string(buffer.GetString(), buffer.GetSize()); }
-
-private:
-	rapidjson::StringBuffer buffer;
-};
-
+// span层类型
 enum SwEnumSpanLayer
 {
 	LUnknown = 0,
@@ -37,6 +16,7 @@ enum SwEnumSpanLayer
 	Cache = 5
 };
 
+// span类型
 enum SwEnumSpanKind
 {
 	KUnknown = 0,
@@ -45,6 +25,7 @@ enum SwEnumSpanKind
 	Local = 3
 };
 
+// 组件类型
 enum SwEnumComponent
 {
 	CUnknown = 0,
@@ -68,6 +49,7 @@ extern const char* SwConstPeer;
 
 typedef std::map<std::string, std::string> StringStringMap;
 
+// 数据
 struct SwData
 {
 	std::string traceId;
@@ -81,17 +63,7 @@ struct SwData
 
 	SwData() :spanId(-1) {}
 
-	bool operator==(const SwData& r) const
-	{
-		return traceId == r.traceId
-			&& segmentId == r.segmentId
-			&& spanId == r.spanId
-			&& service == r.service
-			&& serviceInstance == r.serviceInstance
-			&& endpoint == r.endpoint
-			&& networkAddressUsedAtPeer == r.networkAddressUsedAtPeer
-			&& correlation == r.correlation;
-	}
+	bool operator==(const SwData& r) const;
 };
 
 struct SwLog

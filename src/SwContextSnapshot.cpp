@@ -1,12 +1,36 @@
 #include "SwContextSnapshot.h"
 #include "SwAgent.h"
+
+#define RAPIDJSON_HAS_STDSTRING 1
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/document.h"
+
+class RapidJsonWriter :public rapidjson::Writer<rapidjson::StringBuffer>
+{
+public:
+	RapidJsonWriter() :rapidjson::Writer<rapidjson::StringBuffer>(buffer) {}
+	void Reset()
+	{
+		buffer.Clear();
+		rapidjson::Writer<rapidjson::StringBuffer>::Reset(buffer);
+	}
+	inline std::string GetString() const
+	{
+		return std::string(buffer.GetString(), buffer.GetSize());
+	}
+
+private:
+	rapidjson::StringBuffer buffer;
+};
+
 SwContextSnapshot::SwContextSnapshot(const std::string& traceId, const std::string& segmentId, int spanId, const std::string& operationName, const StringStringMap& correlation)
 {
 	dat.traceId = traceId;
 	dat.segmentId = segmentId;
 	dat.spanId = spanId;
-	dat.service = AgentInst::GetRef().GetService();
-	dat.serviceInstance = AgentInst::GetRef().GetServiceInstance();
+	dat.service = SwInst.GetService();
+	dat.serviceInstance = SwInst.GetServiceInstance();
 	dat.endpoint = operationName;
 	dat.networkAddressUsedAtPeer = "";
 	dat.correlation = correlation;

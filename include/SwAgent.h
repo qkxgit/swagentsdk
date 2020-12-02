@@ -1,104 +1,104 @@
 #ifndef __SWAGENT__
 #define __SWAGENT__
 
-
 #include <string>
-#include "thread/KEventObject.h"
-#include "thread/KAny.h"
-#include "util/KSingleton.hpp"
+#include <vector>
 
-#include "SwHttpClient.hpp"
-#include "SwDefine.h"
-#include "SwHttpReporter.h"
-
-struct AgentHeartbeat
-{
-	int32_t hb;
-	AgentHeartbeat()
-		:hb(0)
-	{
-
-	}
+struct AgentConfig;
+class SwSegment;
+class SwHttpReporter;
+class SwHttpClient;
+namespace klib {
+	class KPthread;
+	class KAny;
+	template<typename T>
+	class KQueue;
+	class KMutex;
 };
 
-struct AgentProperties
-{
-	AgentProperties(const std::string& s, const std::string& si)
-		:service(s), serviceInstance(si)
-	{}
-	std::string service;
-	std::string serviceInstance;
-};
-
-struct AgentConfig
-{
-	std::string swhost;
-	std::string localIp;
-	std::string service;
-	std::string serviceInstance;
-
-	AgentConfig(){}
-
-	AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance)
-		:swhost(swhost),localIp(localIp),service(service),serviceInstance(serviceInstance)
-	{
-
-	}
-};
-
-class SwBroker:public klib::KEventObject<klib::KAny>, public SwHttpClient
+class SwBroker
 {
 public:
 	SwBroker();	
-	// ����
+	~SwBroker();
+	// 启动
 	virtual bool Start(const AgentConfig& c);
-	// ֹͣ
+	// 停止
 	virtual void Stop();
-	// �ȴ�ֹͣ
+	// 等待停止
 	virtual void WaitForStop();
-	// �ύ����
+	// 线程是否运行中
+	bool IsRunning() const;
+	// 消息入队
+	bool Post(const klib::KAny& ev);
+	// 与skywalking服务端通信是否正常
+	virtual bool IsReady() const { return ready; }
+	// 提交数据
 	bool Commit(const SwSegment& seg);
-	// ��skywalking�����ͨ���Ƿ�����
-	virtual bool IsReady() const { return ready; }	
 	
 protected:
+	// 数据处理
 	virtual void ProcessEvent(const klib::KAny& ev);
 
 private:
-	// �ύ������Ϣ
+	// 提交服务信息
 	void Properties(const std::string& service, const std::string& serviceInstance);
-	// ����
+	// 心跳
 	void KeepAlive() ;
+	// 工作线程处理函数
+	int SegmentWorker(int);
 
 private:
-	AgentConfig config;
-	SwHttpReporter reporter;
-	klib::KMutex agentMtx;
+	// 配置
+	AgentConfig *config;
+	// 数据提交实例
+	SwHttpReporter *reporter;
+	// 互斥量
+	klib::KMutex *agentMtx;
+	// 与服务端通信状态
 	volatile bool ready;
+	// 服务属性是否提交
 	volatile bool propsent;
+	// 线程运行状态
+	volatile bool running;
+	// 线程实例
+	klib::KPthread* wkThread;
+	// 队列
+	klib::KQueue<klib::KAny>* segQueue;
+	SwHttpClient* httpClient;
 };
 
 class SwAgent
 {
 public:
-	inline const std::string& GetService() const { return config.service; }
-	inline const std::string& GetServiceInstance() const { return config.serviceInstance; }
-	inline const std::string& GetLocalIp() const { return config.localIp; }
-
+	SwAgent();
+	~SwAgent();
+	// 启动
 	bool Start(const AgentConfig& c);
+	// 停止
 	void Stop();
+	// 等待停止
 	void WaitForStop();
-	// �ύ����
+	// 提交数据
 	bool Commit(const SwSegment& seg);
-	// ��skywalking�����ͨ���Ƿ�����
-	bool IsReady() const;	
+	// 与skywalking服务端通信是否正常
+	bool IsReady() const;
+	// 获取服务名称
+	const std::string& GetService() const;
+	// 获取服务实例
+	const std::string& GetServiceInstance() const;
+	// 获取本地IP
+	const std::string& GetLocalIp() const;
 
 private:
-	AgentConfig config;
-	klib::KMutex brokerMtx;
+	// 配置
+	AgentConfig* config;
+	// 互斥量
+	klib::KMutex *brokerMtx;
+	// 服务端
 	std::vector<SwBroker *> brokers;
 };
 
-typedef KSingleton<SwAgent> AgentInst;
+extern SwAgent SwInst;
 
 #endif // !__SWAGENT__

@@ -1,14 +1,14 @@
 #include <assert.h>
 #include "thread/KPthread.h"
-#include "SwContextManager.h"
+#include "thread/KMutex.h"
 
 #include "SwSpan.h"
+#include "SwContextManager.h"
 #include "SwContextSnapshot.h"
 #include "SwContextCarrier.h"
 
-klib::KMutex SwContextManager::ctxMtx;
-
-std::map<uint32_t, SwContext> SwContextManager::threadCtxMap;
+static klib::KMutex ctxMtx;
+static std::map<uint32_t, SwContext> threadCtxMap;
 
 SwSpan* SwContextManager::CreateLocalSpan(const std::string& operationName)
 {

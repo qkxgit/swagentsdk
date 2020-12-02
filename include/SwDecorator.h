@@ -1,23 +1,23 @@
 #ifndef __SWDECORATOR__
 #define __SWDECORATOR__
 
-
 #include "SwContextManager.h"
 #include "SwContextSnapshot.h"
 #include "SwSpan.h"
 #include "SwAgent.h"
+#include <assert.h>
 /*
-* V±íÊ¾°ó¶¨º¯ÊıµÄ·µ»ØÖµÎªvoid£¬ºó×ºÊı×Ö±íÊ¾°ó¶¨º¯ÊıµÄ²ÎÊı¸öÊı£¬×î¶àÖ§³Ö8¸ö²ÎÊı
-³ÉÔ±º¯ÊıĞŞÊÎÆ÷
+* Vè¡¨ç¤ºç»‘å®šå‡½æ•°çš„è¿”å›å€¼ä¸ºvoidï¼Œåç¼€æ•°å­—è¡¨ç¤ºç»‘å®šå‡½æ•°çš„å‚æ•°ä¸ªæ•°ï¼Œæœ€å¤šæ”¯æŒ8ä¸ªå‚æ•°
+æˆå‘˜å‡½æ•°ä¿®é¥°å™¨
 SwDecorator
 SwDecoratorV
-³ÉÔ±º¯Êı°ó¶¨°ó¶¨º¯Êı
+æˆå‘˜å‡½æ•°ç»‘å®šç»‘å®šå‡½æ•°
 Bind
 BindV
-È«¾Öº¯ÊıĞŞÊÎÆ÷
+å…¨å±€å‡½æ•°ä¿®é¥°å™¨
 SwGDecorator
 SwGDecoratorV
-È«¾Öº¯Êı°ó¶¨º¯Êı
+å…¨å±€å‡½æ•°ç»‘å®šå‡½æ•°
 GBind
 GBindV
 */
@@ -125,7 +125,7 @@ struct SwParameter
 	SwParameter(const std::string& op, const SwContextSnapshot& ss = SwContextSnapshot())
 		:operationName(op), kind(Exit), snapshot(ss), component(rpc), layer(RPCFramework)
 	{
-		peer = AgentInst::GetRef().GetLocalIp();
+		peer = SwInst.GetLocalIp();
 	}
 
 	// entry span

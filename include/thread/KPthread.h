@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef _PTHREAD_HPP_
 #define _PTHREAD_HPP_
 #include <iostream>
@@ -8,6 +6,8 @@
 #include <stdint.h>
 #include "KMutex.h"
 #include "KLockGuard.h"
+#include "KException.h"
+#include "KError.h"
 
 namespace klib {
     class KPthread

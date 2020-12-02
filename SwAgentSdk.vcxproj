@@ -26,7 +26,9 @@
     <ClCompile Include="src\SwContextSnapshot.cpp" />
     <ClCompile Include="src\SwDecorator.cpp" />
     <ClCompile Include="src\SwDefine.cpp" />
+    <ClCompile Include="src\SwHttpClient.cpp" />
     <ClCompile Include="src\SwHttpReporter.cpp" />
+    <ClCompile Include="src\SwSegment.cpp" />
     <ClCompile Include="src\SwSpan.cpp" />
     <ClCompile Include="src\thread\KAny.cpp" />
     <ClCompile Include="src\thread\KAtomic.cpp" />
@@ -51,9 +53,9 @@
     <ClInclude Include="include\SwDecorator.h" />
     <ClInclude Include="include\SwDefine.h" />
     <ClInclude Include="include\SwHeaders.h" />
-    <ClInclude Include="include\SwHttpClient.hpp" />
+    <ClInclude Include="include\SwHttpClient.h" />
     <ClInclude Include="include\SwHttpReporter.h" />
-    <ClInclude Include="include\SwSegment.hpp" />
+    <ClInclude Include="include\SwSegment.h" />
     <ClInclude Include="include\SwSpan.h" />
     <ClInclude Include="include\thread\KAny.h" />
     <ClInclude Include="include\thread\KAtomic.h" />

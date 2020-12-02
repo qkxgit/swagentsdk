@@ -1,9 +1,10 @@
 #ifndef __SWSPAN__
 #define __SWSPAN__
+
 #include <vector>
 #include "SwDefine.h"
-#include "SwSegment.hpp"
-#include "thread/KAtomic.h"
+#include "SwSegment.h"
+
 class SwContext;
 class SwSpan
 {
@@ -37,35 +38,46 @@ public:
 	void SetError(const std::string& key, const std::string& value);
 	void AppendLog(const std::string& key, const std::string& value);
 	inline void AppendRef(const SwSegmentRef& ref) { refs.push_back(ref); }
-
+	// 开始span
 	virtual void Start();
+	// 停止span
 	bool Stop();
+	// 解压context
 	virtual void Extract(const SwContextCarrier& carrier);
+	// 注入context
 	virtual void Inject(SwContextCarrier& carrier){ throw "only support ExitSpan"; }
 
 protected:
+	// 停止span
 	virtual bool Finish();
 
 protected:
 	SwContext& ctx;
-
+	// 是否产生错误
 	bool errorOcurred;
-
+	// span id
 	int32_t spanId;
+	// 父 span id
 	int32_t parentSpanId;
+	// span 类型
 	SwEnumSpanKind kind;
-
+	// 操作名称
 	std::string operationName;
+	// 对端
 	std::string peer;
-
+	// 层
 	SwEnumSpanLayer layer;
+	// 组件
 	SwEnumComponent component;
+	// 标签
 	StringStringMap tags;
-	
+	// 日志
 	std::vector<SwLog> logs;
+	// segment 引用
 	std::vector<SwSegmentRef> refs;
-	
+	// 开始时间
 	uint64_t startTime;
+	// 结束时间
 	uint64_t endTime;
 };
 
@@ -82,10 +94,13 @@ class SwEntrySpan :public SwStackedSpan
 {
 public:
 	SwEntrySpan(SwContext& ctx, const std::string& op);
+	// 开始
 	virtual void Start();
+	// 解压
 	virtual void Extract(const SwContextCarrier& carrier);
 
 protected:
+	// 结束
 	virtual bool Finish();
 };
 
@@ -93,10 +108,13 @@ class SwExitSpan :public SwStackedSpan
 {
 public:
 	SwExitSpan(SwContext& ctx, const std::string &op, const std::string& p);
+	// 开始
 	virtual void Start();
+	// 注入
 	virtual void Inject(SwContextCarrier& carrier);
 
 protected:
+	// 结束
 	virtual bool Finish();
 };
 

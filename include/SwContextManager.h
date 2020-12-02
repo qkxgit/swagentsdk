@@ -2,7 +2,7 @@
 #define __SWCONTEXTMANAGER__
 #include <string>
 #include "SwContext.h"
-#include "thread/KMutex.h"
+
 class SwSpan;
 class SwContextCarrier;
 class SwContextSnapshot;
@@ -10,27 +10,25 @@ class SwContextManager
 {
 	friend class SwContext;
 public:
-	// ´´½¨LocalSpan
+	// åˆ›å»ºLocalSpan
 	static SwSpan* CreateLocalSpan(const std::string& operationName);
-	// ´´½¨EntrySpan
+	// åˆ›å»ºEntrySpan
 	static SwSpan* CreateEntrySpan(const std::string& operationName, const SwContextCarrier& carrier);
-	// ´´½¨ExitSpan
+	// åˆ›å»ºExitSpan
 	static SwSpan* CreateExitSpan(const std::string& operationName, const std::string &peer, SwContextCarrier& carrier);
-	// »ñÈ¡µ±Ç°Ïß³Ì¼¤»îµÄSpan¿ìÕÕ
+	// è·å–å½“å‰çº¿ç¨‹æ¿€æ´»çš„Spanå¿«ç…§
 	static SwContextSnapshot Capture();
-	// ¹ØÁªsnapshotµ½µ±Ç°¼¤»îµÄSpan
+	// å…³è”snapshotåˆ°å½“å‰æ¿€æ´»çš„Span
 	static void Continued(const SwContextSnapshot& snapShot);
-	// »ñÈ¡µ±Ç°Ïß³Ì¼¤»îµÄSpan
+	// è·å–å½“å‰çº¿ç¨‹æ¿€æ´»çš„Span
 	static SwSpan* ActiveSpan();
-	// Ïú»Ùcontext
+	// é”€æ¯context
 	static void DestroyContext();
 
 private:
+	// è·å–å½“å‰çº¿ç¨‹æ¿€æ´»çš„Spanå¿«ç…§
 	static SwContextSnapshot CaptureInner(SwContext& ctx);
+	// åˆ¤æ–­snapshotæ˜¯å¦æ¥è‡ªäºctxæ‰€åœ¨çº¿ç¨‹
 	static bool IsFromCurrent(const SwContextSnapshot& snapshot, SwContext& ctx);
-
-private:
-	static klib::KMutex ctxMtx;
-	static std::map<uint32_t, SwContext> threadCtxMap;
 };
 #endif // !__SWCONTEXTMANAGER__

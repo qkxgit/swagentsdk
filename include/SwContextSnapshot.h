@@ -14,14 +14,15 @@ public:
 		int spanId,
 		const std::string& operationName,
 		const StringStringMap & correlation);
-	// ĞòÁĞ»¯
+	// åºåˆ—åŒ–
 	void Serialize(std::string& r);
-	// ·´ĞòÁĞ»¯
+	// ååºåˆ—åŒ–
 	bool Parse(const std::string& s);
-	// ÊÇ·ñÓĞĞ§µÄ¿ìÕÕ
+	// æ˜¯å¦æœ‰æ•ˆçš„å¿«ç…§
 	bool IsValid() const;
 
 private:
+	// æ•°æ®
 	SwData dat;
 };
 

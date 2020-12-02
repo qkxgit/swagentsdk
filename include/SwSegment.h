@@ -1,11 +1,11 @@
 #ifndef __SWSEGMENT__
 #define __SWSEGMENT__
+
+#include <algorithm>
+#include <vector>
 #include "SwContextCarrier.h"
 #include "SwContextSnapshot.h"
-#include <IceUtil/UUID.h>
-#include "util/KTime.h"
-#include "util/KStringUtility.h"
-#include <algorithm>
+
 class SwSegmentRef
 {
 	friend class SwHttpReporter;
@@ -39,38 +39,20 @@ class SwSegment
 	friend class SwContext;
 	friend class SwContextManager;
 public:
-	SwSegment()
-		:defaultTraceId(true)
-	{
-		klib::KTime::NowMillisecond(timestamp);
-
-		segmentId = IceUtil::generateUUID();
-		segmentId.erase(std::remove(segmentId.begin(), segmentId.end(), '-'), segmentId.end());
-
-		std::string traceId = IceUtil::generateUUID();
-		traceId.erase(std::remove(traceId.begin(), traceId.end(), '-'), traceId.end());
-		relatedTraceIds.push_back(traceId);
-	}
-
-	void Archive(SwSpan* span)
-	{
-		spans.push_back(span);
-	}
-
-	void Relate(const std::string& traceId)
-	{
-		if (defaultTraceId)
-		{
-			relatedTraceIds.pop_back();
-			defaultTraceId = false;
-		}
-		relatedTraceIds.push_back(traceId);
-	}
+	SwSegment();
+	// 归档span
+	void Archive(SwSpan* span);
+	// 关联span
+	void Relate(const std::string& traceId);
 
 private:
+	// 段ID
 	std::string segmentId;
+	// 时间戳
 	uint64_t timestamp;
+	// 归档的span集合
 	std::vector<SwSpan*> spans;
+	// 关联的trace id
 	std::vector<std::string> relatedTraceIds;
 	bool defaultTraceId;
 };

@@ -9,13 +9,15 @@ class SwContextCarrier
 	friend class SwSpan;
 	friend class SwExitSpan;
 public:
+	// 判断carrier是否有效
 	bool IsValid() const;
-	// Ice Context ת���� carrier
+	// Ice Context 转换成 carrier
 	void FromIceContext(const StringStringMap& ctx);
-	// carrier ת����Ice Context
+	// carrier 转换成Ice Context
 	StringStringMap ToIceContext() const;
 	
 private:
+	// 数据
 	SwData dat;
 };
 
