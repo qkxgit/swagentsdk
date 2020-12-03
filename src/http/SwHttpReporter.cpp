@@ -31,7 +31,7 @@ SwHttpReporter::SwHttpReporter(const std::string& service, const std::string& se
 	:service(service), serviceInstance(serviceInstance), running(false)
 {
 	httpClient = new SwHttpClient;
-	segQueue = new klib::KQueue<SwSegment>(2000);
+	segQueue = new klib::KQueue<SwSegment>(5000);
 	wkThread = new klib::KPthread("SwHttpReporter thread");
 }
 
@@ -83,24 +83,49 @@ int SwHttpReporter::SegmentWorker(int)
 {
 	while (running)
 	{
-		SwSegment segment;
-		while (running && segQueue->PopFront(segment))
-		{
-			ProcessEvent(segment);
-		}
+		ProcessEventBatch();
 	}
 	return 0;
 }
 
-void SwHttpReporter::ProcessEvent(const SwSegment& seg)
+void SwHttpReporter::ProcessEventBatch()
 {
-	RapidJsonWriter jw;
-	WriteJson(seg, jw);
-	std::string url = host + "/v3/segment";
-	std::string resp;
-	// "/v3/segments"
-	if (!httpClient->HttpPost(url, jw.GetString(), resp))
-		printf("%s error:[%s], url:[%s]\n", __FUNCTION__, resp.c_str(), url.c_str());
+	if (!segQueue->IsEmpty())
+	{
+		std::string url = host + "/v3/segments";
+		RapidJsonWriter jw;
+		std::vector<SwSegment> segments;
+		segQueue->GetPart(200, segments);
+		std::vector<SwSegment>::const_iterator it = segments.begin();
+		jw.StartArray();
+		while (it != segments.end())
+		{
+			WriteJson(*it, jw);
+			++it;
+		}
+		jw.EndArray();
+		std::string resp;
+		if (!httpClient->HttpPost(url, jw.GetString(), resp))
+			printf("%s error:[%s], url:[%s]\n", __FUNCTION__, resp.c_str(), url.c_str());
+	}
+	else
+	{
+		klib::KTime::MSleep(10);
+	}
+}
+
+void SwHttpReporter::ProcessEventSingle()
+{
+	SwSegment seg;
+	while (running && segQueue->PopFront(seg))
+	{
+		RapidJsonWriter jw;
+		WriteJson(seg, jw);
+		std::string url = host + "/v3/segment";
+		std::string resp;
+		if (!httpClient->HttpPost(url, jw.GetString(), resp))
+			printf("%s error:[%s], url:[%s]\n", __FUNCTION__, resp.c_str(), url.c_str());
+	}	
 }
 
 

@@ -79,8 +79,8 @@ private:
 
 class SwAgent
 {
+	friend class AgentInst;
 public:
-	SwAgent();
 	~SwAgent();
 	// 启动
 	bool Start(const AgentConfig& c);
@@ -100,6 +100,9 @@ public:
 	const std::string& GetLocalIp() const;
 
 private:
+	SwAgent();
+
+private:
 	// 配置
 	AgentConfig* config;
 	// 互斥量
@@ -108,6 +111,14 @@ private:
 	std::vector<SwBroker *> brokers;
 };
 
-extern SwAgent SwInst;
+class AgentInst
+{
+public:
+	static SwAgent& GetRef();
+
+private:
+	AgentInst(){}
+	AgentInst(const AgentInst& r) {}
+};
 
 #endif // !__SWAGENT__

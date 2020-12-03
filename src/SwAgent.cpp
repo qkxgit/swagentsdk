@@ -12,8 +12,6 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/document.h"
 
-SwAgent SwInst;
-
 struct AgentHeartbeat
 {
 	int32_t hb;
@@ -323,4 +321,12 @@ const std::string& SwAgent::GetServiceInstance() const
 const std::string& SwAgent::GetLocalIp() const
 {
 	return config->localIp;
+}
+
+SwAgent& AgentInst::GetRef()
+{
+	static klib::KMutex agentMtx;
+	static SwAgent agent;
+	klib::KLockGuard<klib::KMutex> lock(agentMtx);
+	return agent;
 }

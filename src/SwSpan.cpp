@@ -109,8 +109,8 @@ void SwExitSpan::Inject(SwContextCarrier& carrier)
 	carrier.dat.traceId = ctx.segment.relatedTraceIds[0];
 	carrier.dat.segmentId = ctx.segment.segmentId;
 	carrier.dat.spanId = spanId;
-	carrier.dat.service = SwInst.GetService();//
-	carrier.dat.serviceInstance = SwInst.GetServiceInstance();//
+	carrier.dat.service = AgentInst::GetRef().GetService();//
+	carrier.dat.serviceInstance = AgentInst::GetRef().GetServiceInstance();//
 	carrier.dat.endpoint = operationName;
 	carrier.dat.networkAddressUsedAtPeer = peer;
 	carrier.dat.correlation = ctx.correlation;

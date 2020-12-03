@@ -29,11 +29,13 @@ public:
 
 protected:
 	// 处理线程
-	int SegmentWorker(int);
+	int SegmentWorker(int);	
 
 private:
-	// 处理数据
-	virtual void ProcessEvent(const SwSegment& seg);
+	// 单个提交
+	void ProcessEventSingle();
+	// 批量提交
+	void ProcessEventBatch();
 	// span类型转字符串
 	std::string KindToString(SwEnumSpanKind kind) const;
 	// span层转字符串

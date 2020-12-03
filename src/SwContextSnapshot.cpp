@@ -29,8 +29,8 @@ SwContextSnapshot::SwContextSnapshot(const std::string& traceId, const std::stri
 	dat.traceId = traceId;
 	dat.segmentId = segmentId;
 	dat.spanId = spanId;
-	dat.service = SwInst.GetService();
-	dat.serviceInstance = SwInst.GetServiceInstance();
+	dat.service = AgentInst::GetRef().GetService();
+	dat.serviceInstance = AgentInst::GetRef().GetServiceInstance();
 	dat.endpoint = operationName;
 	dat.networkAddressUsedAtPeer = "";
 	dat.correlation = correlation;

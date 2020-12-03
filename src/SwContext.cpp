@@ -29,7 +29,7 @@ bool SwContext::Stop(SwSpan* span)
 
 	if (spans.empty())
 	{
-		if (!SwInst.Commit(segment))
+		if (!AgentInst::GetRef().Commit(segment))
 		{
 			std::vector<SwSpan*>::iterator it = segment.spans.begin();
 			while (it != segment.spans.end())
@@ -47,7 +47,6 @@ bool SwContext::Stop(SwSpan* span)
 		segment = SwSegment();
 		return true;
 	}
-	printf("Stop span failed\n");
 	return false;
 }
 

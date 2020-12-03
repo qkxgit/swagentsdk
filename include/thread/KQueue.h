@@ -204,8 +204,37 @@ namespace klib {
 		inline void PeekAll(ContainerType& dat)
         {
             KLockGuard<KMutex> lock(m_queueMutex);
-            ContainerType(QueueBase::begin(), QueueBase::end()).swap(dat);
+			if (!QueueBase::empty())
+				ContainerType(QueueBase::begin(), QueueBase::end()).swap(dat);
         }
+
+		// 取出所有元素
+		template<typename ContainerType>
+		inline void GetAll(ContainerType& dat)
+		{
+			KLockGuard<KMutex> lock(m_queueMutex);
+			if (!QueueBase::empty())
+			{
+				ContainerType(QueueBase::begin(), QueueBase::end()).swap(dat);
+				QueueBase::clear();
+			}
+		}
+
+		// 取出部分元素
+		template<typename ContainerType>
+		inline void GetPart(size_t count, ContainerType& dat)
+		{
+			KLockGuard<KMutex> lock(m_queueMutex);
+			if (!QueueBase::empty())
+			{
+				count = (QueueBase::size() > count ? count : QueueBase::size());
+				QueueBase::iterator it = QueueBase::begin();
+				std::advance(it, count);
+
+				ContainerType(QueueBase::begin(), it).swap(dat);
+				QueueBase::erase(QueueBase::begin(), it);
+			}
+		}
 
 		inline bool IsEmpty() const
         {

@@ -125,7 +125,7 @@ struct SwParameter
 	SwParameter(const std::string& op, const SwContextSnapshot& ss = SwContextSnapshot())
 		:operationName(op), kind(Exit), snapshot(ss), component(rpc), layer(RPCFramework)
 	{
-		peer = SwInst.GetLocalIp();
+		peer = AgentInst::GetRef().GetLocalIp();
 	}
 
 	// entry span
