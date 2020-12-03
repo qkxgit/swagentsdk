@@ -228,7 +228,7 @@ namespace klib {
 			if (!QueueBase::empty())
 			{
 				count = (QueueBase::size() > count ? count : QueueBase::size());
-				QueueBase::iterator it = QueueBase::begin();
+				typename QueueBase::iterator it = QueueBase::begin();
 				std::advance(it, count);
 
 				ContainerType(QueueBase::begin(), it).swap(dat);

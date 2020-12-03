@@ -27,8 +27,8 @@ libdirs = -L./ -L../libs -L../libs/linux -L/usr/local/Ice-3.6.1/lib -L/usr/local
 target = ../libs/linux/libSwAgentSdk.a
 endif
 
-vpath %.cpp src src/util src/thread
-srcfile = $(wildcard src/*.cpp)  $(wildcard src/util/*.cpp) $(wildcard src/thread/*.cpp)
+vpath %.cpp src src/util src/thread src/http
+srcfile = $(wildcard src/*.cpp)  $(wildcard src/util/*.cpp) $(wildcard src/thread/*.cpp) $(wildcard src/http/*.cpp)
 
 objs = $(patsubst %.cpp, ${objdir}/%.o, $(notdir ${srcfile}))
 ${objdir}/%.o:	%.cpp
