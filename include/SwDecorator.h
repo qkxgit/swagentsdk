@@ -1,10 +1,10 @@
 #ifndef __SWDECORATOR__
 #define __SWDECORATOR__
 
-#include "SwContextManager.h"
-#include "SwContextSnapshot.h"
+#include "SwSnapshot.h"
 #include "SwSpan.h"
 #include "SwAgent.h"
+#include "SwContext.h"
 #include <assert.h>
 /*
 * V表示绑定函数的返回值为void，后缀数字表示绑定函数的参数个数，最多支持8个参数
@@ -98,8 +98,8 @@ struct SwParameter
 {
 	SwEnumSpanKind kind;
 	std::string operationName;
-	SwContextSnapshot snapshot;
-	SwContextCarrier carrier;
+	SwSnapshot snapshot;
+	SwCarrier carrier;
 	std::string peer;
 
 	SwEnumComponent component;
@@ -115,17 +115,17 @@ struct SwParameter
 	}
 
 	// local span
-	SwParameter(const SwContextSnapshot& ss, const std::string &op)
+	SwParameter(const SwSnapshot& ss, const std::string &op)
 		:operationName(op), kind(Local), snapshot(ss), component(rpc), layer(RPCFramework)
 	{
 		
 	}
 
 	// exit span
-	SwParameter(const std::string& op, const SwContextSnapshot& ss = SwContextSnapshot())
-		:operationName(op), kind(Exit), snapshot(ss), component(rpc), layer(RPCFramework)
+	SwParameter(const std::string& op, const std::string &peer, const SwSnapshot& ss = SwSnapshot())
+		:operationName(op), kind(Exit), snapshot(ss), component(rpc), layer(RPCFramework),peer(peer)
 	{
-		peer = AgentInst::GetRef().GetLocalIp();
+		
 	}
 
 	// entry span
@@ -150,7 +150,7 @@ void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, ArgType& t) {}
 template<>
 void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t);
 
-SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapshot& ss);
+SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwSnapshot& ss);
 
 #define StartSpan(p, s) \
 StringStringMap ctx;\
@@ -198,7 +198,7 @@ public:
 		FinishSpan(dat.operationName)
 			return rc;
 	}
-	const SwContextSnapshot& GetSnapshot() const { return snapshot; }
+	const SwSnapshot& GetSnapshot() const { return snapshot; }
 private:
 	RetType InnerCaller() const
 	{
@@ -214,7 +214,7 @@ private:
 	ConstFunc constFunc;
 	ObjectType* object;
 	SwParameter dat;
-	mutable SwContextSnapshot snapshot;
+	mutable SwSnapshot snapshot;
 };
 
 #define DecoratorTemplate(ArgCount) \
@@ -241,7 +241,7 @@ public:\
 		FinishSpan(dat.operationName)\
 		return rc;\
 	}\
-	const SwContextSnapshot &GetSnapshot() const {return snapshot; }\
+	const SwSnapshot &GetSnapshot() const {return snapshot; }\
 private:\
 	RetType InnerCaller(Jv(FormalParam,ArgCount)) const\
 	{\
@@ -257,7 +257,7 @@ private:\
 	ConstFunc constFunc;\
 	ObjectType* object;\
 	SwParameter dat;\
-	mutable SwContextSnapshot snapshot;\
+	mutable SwSnapshot snapshot;\
 };
 DecoratorTemplate(1)
 DecoratorTemplate(2)
@@ -334,7 +334,7 @@ public:
 			InnerCaller();
 		FinishSpan(dat.operationName)
 	}
-	const SwContextSnapshot& GetSnapshot() const { return snapshot; }
+	const SwSnapshot& GetSnapshot() const { return snapshot; }
 private:
 	void InnerCaller() const
 	{
@@ -351,7 +351,7 @@ private:
 	ConstFunc constFunc;
 	ObjectType* object;
 	SwParameter dat;
-	mutable SwContextSnapshot snapshot;
+	mutable SwSnapshot snapshot;
 };
 
 #define DecoratorVTemplate(ArgCount) \
@@ -376,7 +376,7 @@ public:\
 		InnerCaller(Jv(ActualParam,ArgCount));\
 		FinishSpan(dat.operationName)\
 	}\
-	const SwContextSnapshot &GetSnapshot() const {return snapshot; }\
+	const SwSnapshot &GetSnapshot() const {return snapshot; }\
 private:\
 	void InnerCaller(Jv(FormalParam,ArgCount)) const\
 	{\
@@ -393,7 +393,7 @@ private:\
 	ConstFunc constFunc;\
 	ObjectType* object;\
 	SwParameter dat;\
-	mutable SwContextSnapshot snapshot;\
+	mutable SwSnapshot snapshot;\
 };
 DecoratorVTemplate(1)
 DecoratorVTemplate(2)
@@ -471,7 +471,7 @@ public:
 			return rc;
 	}
 
-	const SwContextSnapshot& GetSnapshot() const { return snapshot; }
+	const SwSnapshot& GetSnapshot() const { return snapshot; }
 private:
 	RetType InnerCaller() const
 	{
@@ -483,7 +483,7 @@ private:
 private:
 	NormFunc normFunc;
 	SwParameter dat;
-	mutable SwContextSnapshot snapshot;
+	mutable SwSnapshot snapshot;
 };
 
 #define GDecoratorTemplate(ArgCount) \
@@ -507,7 +507,7 @@ public:\
 		return rc;\
 	}\
 \
-	const SwContextSnapshot &GetSnapshot() const {return snapshot; }\
+	const SwSnapshot &GetSnapshot() const {return snapshot; }\
 private:\
 	RetType InnerCaller(Jv(FormalParam,ArgCount)) const\
 	{\
@@ -519,7 +519,7 @@ private:\
 private:\
 	NormFunc normFunc;\
 	SwParameter dat;\
-	mutable SwContextSnapshot snapshot;\
+	mutable SwSnapshot snapshot;\
 };
 GDecoratorTemplate(1)
 GDecoratorTemplate(2)
@@ -580,11 +580,11 @@ private:
 			throw "function pointer is null";
 	}
 
-	const SwContextSnapshot& GetSnapshot() const { return snapshot; }
+	const SwSnapshot& GetSnapshot() const { return snapshot; }
 private:
 	NormFunc normFunc;
 	SwParameter dat;
-	mutable SwContextSnapshot snapshot;
+	mutable SwSnapshot snapshot;
 };
 
 #define GDecoratorVTemplate(ArgCount) \
@@ -615,11 +615,11 @@ private:\
 			throw "function pointer is null";\
 	}\
 \
-	const SwContextSnapshot &GetSnapshot() const {return snapshot; }\
+	const SwSnapshot &GetSnapshot() const {return snapshot; }\
 private:\
 	NormFunc normFunc;\
 	SwParameter dat;\
-	mutable SwContextSnapshot snapshot;\
+	mutable SwSnapshot snapshot;\
 };
 
 GDecoratorVTemplate(1)

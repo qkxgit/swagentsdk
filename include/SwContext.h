@@ -5,23 +5,41 @@
 #include "SwSegment.h"
 
 class SwSpan;
+class SwAgent;
 class SwContext
 {
 	friend class SwSpan;
 	friend class SwEntrySpan;
 	friend class SwExitSpan;
-	friend class SwContextManager;
 public:
 	SwContext();
 	~SwContext();
+	// 设置agent
+	void Initialize(SwAgent* ag);
+	// 获取context
+	static SwContext& GetContext();
+	// 线程退出时销毁context
+	static void DestroyContext();
+	// 创建LocalSpan
+	SwSpan* CreateLocalSpan(const std::string& operationName);
+	// 创建EntrySpan
+	SwSpan* CreateEntrySpan(const std::string& operationName, const SwCarrier& carrier);
+	// 创建ExitSpan
+	SwSpan* CreateExitSpan(const std::string& operationName, const std::string& peer);
+	// 获取当前激活的Span快照
+	SwSnapshot Capture();
+	// 关联snapshot到当前激活的Span
+	void Continued(const SwSnapshot& snapShot);
+	// 当前激活的span
+	SwSpan* ActiveSpan();
+	
+private:
 	// 启动span
 	void Start(SwSpan* span);
 	// 停止span
 	bool Stop(SwSpan* span);
-	// 当前激活的span
-	SwSpan* ActiveSpan();
-	// 下一个Span id
-	int32_t NextSpanId();
+	// 判断snapshot是否来自于自己
+	bool IsFromCurrent(const SwSnapshot& snapshot);
 
 private:
 	// 栈深度
@@ -33,7 +51,8 @@ private:
 	// 段
 	SwSegment segment;
 	// 跨度
-	std::vector<SwSpan*> spans;
+	std::vector<SwSpan*> spans;	
+	SwAgent* agent;
 };
 
 #endif

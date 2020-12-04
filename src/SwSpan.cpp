@@ -6,7 +6,7 @@ SwSpan::SwSpan(SwContext& ctx, const std::string& op, SwEnumSpanKind k)
 	:ctx(ctx), operationName(op), kind(k),component(rpc), layer(RPCFramework),
 	errorOcurred(false),startTime(0),endTime(0)
 {
-	spanId = ctx.NextSpanId();
+	spanId = ++ctx.sid;
 	SwSpan* span = ctx.ActiveSpan();
 	parentSpanId = (span ? span->spanId : -1);
 }
@@ -42,7 +42,7 @@ void SwSpan::SetError(const std::string& key, const std::string& value)
 	errorOcurred = true; AppendLog(key, value);
 }
 
-void SwSpan::Extract(const SwContextCarrier& carrier)
+void SwSpan::Extract(const SwCarrier& carrier)
 {
 	if (carrier.IsValid())
 	{
@@ -50,7 +50,6 @@ void SwSpan::Extract(const SwContextCarrier& carrier)
 		ctx.segment.Relate(carrier.dat.traceId);
 	}
 }
-
 
 SwStackedSpan::SwStackedSpan(SwContext& ctx, SwEnumSpanKind k, const std::string& op, const std::string& p)
 	:SwSpan(ctx, op, k),depth(0)
@@ -73,10 +72,10 @@ void SwEntrySpan::Start()
 
 bool SwEntrySpan::Finish()
 {
-	return (--ctx.depth == 0) && SwSpan::Finish();
+	return (ctx.depth-- == 1) && SwSpan::Finish();
 }
 
-void SwEntrySpan::Extract(const SwContextCarrier& carrier)
+void SwEntrySpan::Extract(const SwCarrier& carrier)
 {
 	if (carrier.IsValid())
 	{
@@ -104,13 +103,13 @@ bool SwExitSpan::Finish()
 	return (ctx.depth-- == depth) && SwSpan::Finish();
 }
 
-void SwExitSpan::Inject(SwContextCarrier& carrier)
+void SwExitSpan::Inject(SwCarrier& carrier)
 {
 	carrier.dat.traceId = ctx.segment.relatedTraceIds[0];
 	carrier.dat.segmentId = ctx.segment.segmentId;
 	carrier.dat.spanId = spanId;
-	carrier.dat.service = AgentInst::GetRef().GetService();//
-	carrier.dat.serviceInstance = AgentInst::GetRef().GetServiceInstance();//
+	carrier.dat.service = ctx.agent->GetService();//
+	carrier.dat.serviceInstance = ctx.agent->GetServiceInstance();//
 	carrier.dat.endpoint = operationName;
 	carrier.dat.networkAddressUsedAtPeer = peer;
 	carrier.dat.correlation = ctx.correlation;

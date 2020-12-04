@@ -18,14 +18,15 @@ void SetCarrier(SwEnumSpanKind k, const StringStringMap& c, StringStringMap& t)
 }
 
 
-SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapshot& ss)
+SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwSnapshot& ss)
 {
 	SwSpan* span = NULL;
+	SwContext& swCtx = SwContext::GetContext();
 	switch (dat.kind)
 	{
 	case Entry:
 	{
-		span = SwContextManager::CreateEntrySpan(dat.operationName, dat.carrier);
+		span = swCtx.CreateEntrySpan(dat.operationName, dat.carrier);
 		span->SetTags(dat.tags);
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
@@ -34,30 +35,30 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwContextSnapsh
 	}
 	case Exit:
 	{
-		SwContextCarrier carrier;
-		span = SwContextManager::CreateExitSpan(dat.operationName, dat.peer, carrier);
+		span = swCtx.CreateExitSpan(dat.operationName, dat.peer);
 		span->SetTags(dat.tags);
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
 		span->Start();
 		if (dat.snapshot.IsValid())
-			SwContextManager::Continued(dat.snapshot);
+			swCtx.Continued(dat.snapshot);
+		SwCarrier carrier;
 		span->Inject(carrier);
 		ctx = carrier.ToIceContext();
 		span->SetTag("traceId", ctx["traceId"]);
 		break;
 	}
 	default:
-		span = SwContextManager::CreateLocalSpan(dat.operationName);
+		span = swCtx.CreateLocalSpan(dat.operationName);
 		span->SetTags(dat.tags);
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
 		span->Start();
 		if (dat.snapshot.IsValid())
-			SwContextManager::Continued(dat.snapshot);
+			swCtx.Continued(dat.snapshot);
 		break;
 	}
-	ss = SwContextManager::Capture();
+	ss = swCtx.Capture();
 	return span;
 }
 

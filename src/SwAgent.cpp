@@ -1,7 +1,7 @@
 #include "SwAgent.h"
 #include "SwDefine.h"
-#include "http/SwHttpReporter.h"
-#include "http/SwHttpClient.h"
+#include "http/SwReporter.h"
+#include "http/SwHttp.h"
 
 #include "util/KStringUtility.h"
 #include "thread/KEventObject.h"
@@ -62,8 +62,8 @@ SwBroker::SwBroker()
 	wkThread = new klib::KPthread("SwAgent thread");
 	agentMtx = new klib::KMutex;
 	config = new AgentConfig;
-	reporter = new SwHttpReporter(config->service, config->serviceInstance);
-	httpClient = new SwHttpClient;
+	reporter = new SwReporter(config->service, config->serviceInstance);
+	httpClient = new SwHttp;
 }
 
 SwBroker::~SwBroker()

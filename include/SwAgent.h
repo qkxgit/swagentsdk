@@ -15,8 +15,8 @@ struct AgentConfig
 	AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance);
 };
 class SwSegment;
-class SwHttpReporter;
-class SwHttpClient;
+class SwReporter;
+class SwHttp;
 namespace klib {
 	class KPthread;
 	class KAny;
@@ -61,7 +61,7 @@ private:
 	// 配置
 	AgentConfig *config;
 	// 数据提交实例
-	SwHttpReporter *reporter;
+	SwReporter *reporter;
 	// 互斥量
 	klib::KMutex *agentMtx;
 	// 与服务端通信状态
@@ -74,13 +74,13 @@ private:
 	klib::KPthread* wkThread;
 	// 队列
 	klib::KQueue<klib::KAny>* segQueue;
-	SwHttpClient* httpClient;
+	SwHttp* httpClient;
 };
 
 class SwAgent
 {
-	friend class AgentInst;
 public:
+	SwAgent();
 	~SwAgent();
 	// 启动
 	bool Start(const AgentConfig& c);
@@ -100,9 +100,6 @@ public:
 	const std::string& GetLocalIp() const;
 
 private:
-	SwAgent();
-
-private:
 	// 配置
 	AgentConfig* config;
 	// 互斥量
@@ -117,7 +114,7 @@ public:
 	static SwAgent& GetRef();
 
 private:
-	AgentInst(){}
+	AgentInst() {}
 	AgentInst(const AgentInst& r) {}
 };
 

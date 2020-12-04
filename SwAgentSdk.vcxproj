@@ -19,13 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\http\SwHttpClient.cpp" />
-    <ClCompile Include="src\http\SwHttpReporter.cpp" />
+    <ClCompile Include="src\http\SwHttp.cpp" />
+    <ClCompile Include="src\http\SwReporter.cpp" />
     <ClCompile Include="src\SwAgent.cpp" />
     <ClCompile Include="src\SwContext.cpp" />
-    <ClCompile Include="src\SwContextCarrier.cpp" />
-    <ClCompile Include="src\SwContextManager.cpp" />
-    <ClCompile Include="src\SwContextSnapshot.cpp" />
+    <ClCompile Include="src\SwCarrier.cpp" />
+    <ClCompile Include="src\SwSnapshot.cpp" />
     <ClCompile Include="src\SwDecorator.cpp" />
     <ClCompile Include="src\SwDefine.cpp" />
     <ClCompile Include="src\SwSegment.cpp" />
@@ -45,13 +44,12 @@
     <ClCompile Include="src\util\KTime.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\http\SwHttpClient.h" />
-    <ClInclude Include="include\http\SwHttpReporter.h" />
+    <ClInclude Include="include\http\SwHttp.h" />
+    <ClInclude Include="include\http\SwReporter.h" />
     <ClInclude Include="include\SwAgent.h" />
     <ClInclude Include="include\SwContext.h" />
-    <ClInclude Include="include\SwContextCarrier.h" />
-    <ClInclude Include="include\SwContextManager.h" />
-    <ClInclude Include="include\SwContextSnapshot.h" />
+    <ClInclude Include="include\SwCarrier.h" />
+    <ClInclude Include="include\SwSnapshot.h" />
     <ClInclude Include="include\SwDecorator.h" />
     <ClInclude Include="include\SwDefine.h" />
     <ClInclude Include="include\SwHeaders.h" />

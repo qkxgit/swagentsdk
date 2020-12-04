@@ -3,21 +3,21 @@
 
 #include <algorithm>
 #include <vector>
-#include "SwContextCarrier.h"
-#include "SwContextSnapshot.h"
+#include "SwCarrier.h"
+#include "SwSnapshot.h"
 
 class SwSegmentRef
 {
-	friend class SwHttpReporter;
-	friend class SwContextManager;
+	friend class SwReporter;
+	friend class SwContext;
 public:
 	SwSegmentRef()
 		:refType("CrossProcess") {}
 
-	SwSegmentRef(const SwContextSnapshot& snapshot)
+	SwSegmentRef(const SwSnapshot& snapshot)
 		:refType("CrossThread"), dat(snapshot.dat) {}
 
-	SwSegmentRef(const SwContextCarrier& carrier)
+	SwSegmentRef(const SwCarrier& carrier)
 		:refType("CrossProcess"), dat(carrier.dat) {}
 
 	inline bool operator==(const SwSegmentRef& other) const
@@ -34,10 +34,9 @@ private:
 class SwSpan;
 class SwSegment
 {
-	friend class SwHttpReporter;
+	friend class SwReporter;
 	friend class SwExitSpan;
 	friend class SwContext;
-	friend class SwContextManager;
 public:
 	SwSegment();
 	// 归档span

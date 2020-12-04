@@ -43,9 +43,9 @@ public:
 	// 停止span
 	bool Stop();
 	// 解压context
-	virtual void Extract(const SwContextCarrier& carrier);
+	virtual void Extract(const SwCarrier& carrier);
 	// 注入context
-	virtual void Inject(SwContextCarrier& carrier){ throw "only support ExitSpan"; }
+	virtual void Inject(SwCarrier& carrier){ throw "only support ExitSpan"; }
 
 protected:
 	// 停止span
@@ -97,7 +97,7 @@ public:
 	// 开始
 	virtual void Start();
 	// 解压
-	virtual void Extract(const SwContextCarrier& carrier);
+	virtual void Extract(const SwCarrier& carrier);
 
 protected:
 	// 结束
@@ -111,7 +111,7 @@ public:
 	// 开始
 	virtual void Start();
 	// 注入
-	virtual void Inject(SwContextCarrier& carrier);
+	virtual void Inject(SwCarrier& carrier);
 
 protected:
 	// 结束

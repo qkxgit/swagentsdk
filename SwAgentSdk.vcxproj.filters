@@ -84,15 +84,6 @@
     <ClCompile Include="src\SwContext.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SwContextCarrier.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SwContextManager.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SwContextSnapshot.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\SwDecorator.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -105,10 +96,16 @@
     <ClCompile Include="src\SwSegment.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\http\SwHttpClient.cpp">
+    <ClCompile Include="src\SwCarrier.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SwSnapshot.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\http\SwHttp.cpp">
       <Filter>src\http</Filter>
     </ClCompile>
-    <ClCompile Include="src\http\SwHttpReporter.cpp">
+    <ClCompile Include="src\http\SwReporter.cpp">
       <Filter>src\http</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,15 +158,6 @@
     <ClInclude Include="include\SwContext.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\SwContextCarrier.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SwContextManager.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SwContextSnapshot.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\SwDecorator.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -185,10 +173,16 @@
     <ClInclude Include="include\SwSegment.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\http\SwHttpClient.h">
+    <ClInclude Include="include\SwCarrier.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SwSnapshot.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\http\SwHttp.h">
       <Filter>include\http</Filter>
     </ClInclude>
-    <ClInclude Include="include\http\SwHttpReporter.h">
+    <ClInclude Include="include\http\SwReporter.h">
       <Filter>include\http</Filter>
     </ClInclude>
   </ItemGroup>
