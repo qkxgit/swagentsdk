@@ -221,6 +221,8 @@ void SwBroker::KeepAlive()
 		printf("set heartbeat failed\n");
 }
 
+static const std::string AgentVersion = "1.0.0#20201205-1";
+
 SwAgent::SwAgent()
 {
 	brokerMtx = new klib::KMutex;
@@ -321,6 +323,11 @@ const std::string& SwAgent::GetServiceInstance() const
 const std::string& SwAgent::GetLocalIp() const
 {
 	return config->localIp;
+}
+
+const std::string SwAgent::GetVersion() const
+{
+	return AgentVersion;
 }
 
 SwAgent& AgentInst::GetRef()

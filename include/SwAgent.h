@@ -98,6 +98,8 @@ public:
 	const std::string& GetServiceInstance() const;
 	// 获取本地IP
 	const std::string& GetLocalIp() const;
+	// 获取版本信息
+	const std::string GetVersion() const;
 
 private:
 	// 配置
