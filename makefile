@@ -39,6 +39,7 @@ ${target}:	${objs}
 	ar rcs $@ $(objs)
 	rm -f $(objs)
 	rm -rf ../public/skywalking/include/*
+	mkdir -p ../public/skywalking/include
 	cp ./include/*.h ../public/skywalking/include
 #	${compiler} ${libdirs} $^ ${libs} -o $@
 
