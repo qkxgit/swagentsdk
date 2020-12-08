@@ -271,7 +271,6 @@ void SwAgent::Stop()
 
 void SwAgent::WaitForStop()
 {
-	klib::KLockGuard<klib::KMutex> lock(*brokerMtx);
 	for (uint32_t i = 0; i < brokers.size(); ++i)
 	{
 		SwBroker* b = brokers[i];
