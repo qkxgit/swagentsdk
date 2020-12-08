@@ -1,8 +1,14 @@
+/*
+用于跨进程传递span上下文信息
+date:2020/12/08
+author:qkx
+*/
 #include <cstdlib>
 #include "SwCarrier.h"
 #include "util/KStringUtility.h"
 
-
+// 判断carrier是否有效
+// 有效返回true,无效返回false
 bool SwCarrier::IsValid() const
 {
 	return !dat.traceId.empty()
@@ -14,6 +20,8 @@ bool SwCarrier::IsValid() const
 		&& dat.spanId > -1;
 }
 
+// ice context 转换成 carrier
+// ctx 为ice context
 void SwCarrier::FromIceContext(const StringStringMap& ctx)
 {
 	StringStringMap::const_iterator it = ctx.begin();
@@ -39,6 +47,8 @@ void SwCarrier::FromIceContext(const StringStringMap& ctx)
 	}
 }
 
+// carrier 转换成ice context
+// 返回ice context
 StringStringMap SwCarrier::ToIceContext() const
 {
 	StringStringMap ctx;

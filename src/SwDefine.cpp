@@ -1,3 +1,8 @@
+/*
+定义数据
+date:2020/12/08
+author:qkx
+*/
 #include "SwDefine.h"
 
 const char* SwConstTraceId = "traceId";

@@ -1,3 +1,8 @@
+/*
+用于线程间传递span信息
+date:2020/12/08
+author:qkx
+*/
 #include "SwSnapshot.h"
 #include "SwAgent.h"
 
@@ -39,6 +44,7 @@ SwSnapshot::SwSnapshot(const std::string& traceId, const std::string& segmentId,
 	dat.correlation = correlation;
 }
 
+// 序列化snapshot，r序列化结果
 void SwSnapshot::Serialize(std::string& r)
 {
 	RapidJsonWriter w;
@@ -62,6 +68,7 @@ void SwSnapshot::Serialize(std::string& r)
 	r = w.GetString();
 }
 
+// 反序列化字符串为snapshot，包含所有必须字段返回成功，否则返回失败
 bool SwSnapshot::Parse(const std::string& s)
 {
 	rapidjson::Document doc;

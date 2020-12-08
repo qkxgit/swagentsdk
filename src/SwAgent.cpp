@@ -1,3 +1,9 @@
+/*
+skywalking 客户端，用于连接skywalking服务端并提交数据
+date:2020/12/08
+author:qkx
+*/
+
 #include "SwAgent.h"
 #include "SwDefine.h"
 #include "http/SwReporter.h"
@@ -77,6 +83,8 @@ SwBroker::~SwBroker()
 	delete httpClient;
 }
 
+// 启动
+// c skywalking 服务端配置
 bool SwBroker::Start(const AgentConfig& c)
 {
 	klib::KLockGuard<klib::KMutex> lock(*agentMtx);
@@ -108,6 +116,7 @@ bool SwBroker::Start(const AgentConfig& c)
 	return true;
 }
 
+// 停止
 void SwBroker::Stop()
 {
 	klib::KLockGuard<klib::KMutex> lock(*agentMtx);
@@ -118,22 +127,26 @@ void SwBroker::Stop()
 	}
 }
 
+// 等待停止
 void SwBroker::WaitForStop()
 {
 	wkThread->Join();
 	reporter->WaitForStop();
 }
 
+// 
 bool SwBroker::IsRunning() const
 {
 	return running;
 }
 
+// 
 bool SwBroker::Post(const klib::KAny& ev)
 {
 	return segQueue->PushBack(ev);
 }
 
+// 
 int SwBroker::SegmentWorker(int)
 {
 	while (IsRunning())
@@ -153,11 +166,13 @@ int SwBroker::SegmentWorker(int)
 	return 0;
 }
 
+// 提交segment，队列满返回false，否则返回true
 bool SwBroker::Commit(const SwSegment& seg)
 {
 	return reporter->Post(seg);
 }
 
+// 处理消息
 void SwBroker::ProcessEvent(const klib::KAny& ev)
 {
 	const std::type_info& ti = ev.TypeInfo();
@@ -175,6 +190,7 @@ void SwBroker::ProcessEvent(const klib::KAny& ev)
 	}
 }
 
+// 提交服务相关信息
 void SwBroker::Properties(const std::string& service, const std::string& serviceInstance)
 {
 	if (!propsent)
@@ -204,6 +220,7 @@ void SwBroker::Properties(const std::string& service, const std::string& service
 	}
 }
 
+// 发送心跳消息
 void SwBroker::KeepAlive()
 {
 	RapidJsonWriter jw;
@@ -235,6 +252,7 @@ SwAgent::~SwAgent()
 	delete config;
 }
 
+// 启动skywalking agent
 bool SwAgent::Start(const AgentConfig& c)
 {
 	bool rc = true;
@@ -262,6 +280,7 @@ bool SwAgent::Start(const AgentConfig& c)
 	return rc;
 }
 
+// 停止
 void SwAgent::Stop()
 {
 	klib::KLockGuard<klib::KMutex> lock(*brokerMtx);
@@ -280,6 +299,7 @@ void SwAgent::WaitForStop()
 	brokers.clear();
 }
 
+// 判断是否有连接上的skywalking 服务端
 bool SwAgent::IsReady() const
 {
 	klib::KLockGuard<klib::KMutex> lock(*brokerMtx);
@@ -291,6 +311,7 @@ bool SwAgent::IsReady() const
 	return false;
 }
 
+// 提交segment
 bool SwAgent::Commit(const SwSegment& seg)
 {
 	klib::KLockGuard<klib::KMutex> lock(*brokerMtx);
@@ -309,16 +330,19 @@ bool SwAgent::Commit(const SwSegment& seg)
 	return false;
 }
 
+// 获取服务名称
 const std::string& SwAgent::GetService() const
 {
 	return config->service;
 }
 
+// 获取服务实例名称
 const std::string& SwAgent::GetServiceInstance() const
 {
 	return config->serviceInstance;
 }
 
+// 获取本地IP
 const std::string& SwAgent::GetLocalIp() const
 {
 	return config->localIp;

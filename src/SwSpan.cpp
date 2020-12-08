@@ -1,3 +1,8 @@
+/*
+span类，提供span相关的操作，包括启动、停止、context解析注入、设置标签、日志等
+date:2020/12/08
+author:qkx
+*/
 #include "SwSpan.h"
 #include "SwContext.h"
 #include "SwAgent.h"
@@ -11,17 +16,20 @@ SwSpan::SwSpan(SwContext& ctx, const std::string& op, SwEnumSpanKind k)
 	parentSpanId = (span ? span->spanId : -1);
 }
 
+// 启动span
 void SwSpan::Start()
 {
 	klib::KTime::NowMillisecond(startTime);
 	ctx.Start(this);
 }
 
+// 停止span，成功返回true，失败返回false
 bool SwSpan::Stop()
 {
 	return ctx.Stop(this);
 }
 
+// 结束span，返回true
 bool SwSpan::Finish()
 {
 	klib::KTime::NowMillisecond(endTime);
@@ -29,6 +37,7 @@ bool SwSpan::Finish()
 	return true;
 }
 
+// 追加日志
 void SwSpan::AppendLog(const std::string& key, const std::string& value)
 {
 	SwLog lg;
@@ -37,11 +46,15 @@ void SwSpan::AppendLog(const std::string& key, const std::string& value)
 	logs.push_back(lg);
 }
 
+// 调用报错时，设置错误信息
+// key：错误标题
+// value：具体错误内容
 void SwSpan::SetError(const std::string& key, const std::string& value)
 {
 	errorOcurred = true; AppendLog(key, value);
 }
 
+// 设置传递过来的上下文信息，carrier上下文信息载体
 void SwSpan::Extract(const SwCarrier& carrier)
 {
 	if (carrier.IsValid())
@@ -63,6 +76,7 @@ SwEntrySpan::SwEntrySpan(SwContext& ctx, const std::string& op)
 
 }
 
+// 启动span
 void SwEntrySpan::Start()
 {
 	depth = ++ctx.depth;
@@ -70,11 +84,13 @@ void SwEntrySpan::Start()
 		SwStackedSpan::Start();
 }
 
+// 结束span
 bool SwEntrySpan::Finish()
 {
 	return (ctx.depth-- == 1) && SwSpan::Finish();
 }
 
+// 设置传递过来的上下文信息，carrier上下文信息载体
 void SwEntrySpan::Extract(const SwCarrier& carrier)
 {
 	if (carrier.IsValid())
@@ -92,17 +108,20 @@ SwExitSpan::SwExitSpan(SwContext& ctx, const std::string& op, const std::string&
 	
 }
 
+// 启动span
 void SwExitSpan::Start()
 {
 	depth = ++ctx.depth;
 	SwStackedSpan::Start();
 }
 
+// 结束span，成功返回true,失败返回false
 bool SwExitSpan::Finish()
 {
 	return (ctx.depth-- == depth) && SwSpan::Finish();
 }
 
+// 注入上下文信息，carrier上下文载体
 void SwExitSpan::Inject(SwCarrier& carrier)
 {
 	carrier.dat.traceId = ctx.segment.relatedTraceIds[0];
