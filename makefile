@@ -4,7 +4,7 @@ platform=$(shell uname)
 $(warning ${platform})
 
 compiler = g++ 
-incdirs = -I./include -I/usr/local/Ice-3.6.1/include
+incdirs = -I./include -I/usr/local/Ice-3.6.1/include -I../public/libcurl/include -I../public
 
 ifeq (${platform}, AIX)
 cppflags = -D_REENTRANT -D_EVENTDES -DAIX -D__linux__  -D_GNU_SOURCE -DIA64 -DICE_CONST_ICONV_INBUF
