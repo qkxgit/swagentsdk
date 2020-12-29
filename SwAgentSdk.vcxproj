@@ -19,6 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KBuffer.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KCondVariable.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KError.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KEventObject.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KException.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KMutex.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KBase64.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KEndian.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KSHA1.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KStringUtility.cpp" />
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KTime.cpp" />
     <ClCompile Include="src\http\SwHttp.cpp" />
     <ClCompile Include="src\http\SwReporter.cpp" />
     <ClCompile Include="src\SwAgent.cpp" />
@@ -29,21 +40,28 @@
     <ClCompile Include="src\SwDefine.cpp" />
     <ClCompile Include="src\SwSegment.cpp" />
     <ClCompile Include="src\SwSpan.cpp" />
-    <ClCompile Include="src\thread\KAny.cpp" />
-    <ClCompile Include="src\thread\KAtomic.cpp" />
-    <ClCompile Include="src\thread\KBuffer.cpp" />
-    <ClCompile Include="src\thread\KCondVariable.cpp" />
-    <ClCompile Include="src\thread\KError.cpp" />
-    <ClCompile Include="src\thread\KEventObject.cpp" />
-    <ClCompile Include="src\thread\KException.cpp" />
-    <ClCompile Include="src\thread\KLockGuard.cpp" />
-    <ClCompile Include="src\thread\KMutex.cpp" />
-    <ClCompile Include="src\thread\KPthread.cpp" />
-    <ClCompile Include="src\thread\KQueue.cpp" />
-    <ClCompile Include="src\util\KStringUtility.cpp" />
-    <ClCompile Include="src\util\KTime.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KAny.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KAtomic.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KBuffer.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KCondVariable.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KError.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KEventObject.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KException.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KLockGuard.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KMutex.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KPthread.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KQueue.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KBase64.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KCsvFile.hpp" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KEndian.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KIniFile.hpp" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KSHA1.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KSingleton.hpp" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KStringUtility.h" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KTextFile.hpp" />
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KTime.h" />
     <ClInclude Include="include\http\SwHttp.h" />
     <ClInclude Include="include\http\SwReporter.h" />
     <ClInclude Include="include\SwAgent.h" />
@@ -55,20 +73,6 @@
     <ClInclude Include="include\SwHeaders.h" />
     <ClInclude Include="include\SwSegment.h" />
     <ClInclude Include="include\SwSpan.h" />
-    <ClInclude Include="include\thread\KAny.h" />
-    <ClInclude Include="include\thread\KAtomic.h" />
-    <ClInclude Include="include\thread\KBuffer.h" />
-    <ClInclude Include="include\thread\KCondVariable.h" />
-    <ClInclude Include="include\thread\KError.h" />
-    <ClInclude Include="include\thread\KEventObject.h" />
-    <ClInclude Include="include\thread\KException.h" />
-    <ClInclude Include="include\thread\KLockGuard.h" />
-    <ClInclude Include="include\thread\KMutex.h" />
-    <ClInclude Include="include\thread\KPthread.h" />
-    <ClInclude Include="include\thread\KQueue.h" />
-    <ClInclude Include="include\util\KSingleton.hpp" />
-    <ClInclude Include="include\util\KStringUtility.h" />
-    <ClInclude Include="include\util\KTime.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -144,7 +148,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>.\include;E:\depends\windows\libcurl\include;E:\depends\windows\pthreads-w32-2-9-1-release\Pre-built.2\include;E:\depends\windows\GnuWin32\include;C:\Program Files %28x86%29\ZeroC\Ice-3.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\src;.\include;E:\depends\windows\libcurl\include;E:\depends\windows\pthreads-w32-2-9-1-release\Pre-built.2\include;E:\depends\windows\GnuWin32\include;C:\Program Files %28x86%29\ZeroC\Ice-3.5.1\include;..\..\klib.git\trunk\src;..\..\klib.git\trunk</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

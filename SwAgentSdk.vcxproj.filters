@@ -16,20 +16,8 @@
     <Filter Include="src">
       <UniqueIdentifier>{7d747e01-d928-483d-ae71-1627930d14ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\thread">
-      <UniqueIdentifier>{231b8b42-c674-494d-9432-934f3db2e7fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\util">
-      <UniqueIdentifier>{3ee24192-608b-4d38-9508-00aeb6f4db18}</UniqueIdentifier>
-    </Filter>
     <Filter Include="include">
       <UniqueIdentifier>{7503aa69-af15-46bb-8fd7-ff2f11810352}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\thread">
-      <UniqueIdentifier>{fbc57d44-1cd7-463c-a80b-8f9069f9979a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="include\util">
-      <UniqueIdentifier>{88ea358f-8181-4694-9e4e-67f917409485}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\http">
       <UniqueIdentifier>{b99aee73-15f9-42b9-838f-c30419b64af9}</UniqueIdentifier>
@@ -37,47 +25,17 @@
     <Filter Include="src\http">
       <UniqueIdentifier>{60461198-ac56-43c9-945e-d067e059d250}</UniqueIdentifier>
     </Filter>
+    <Filter Include="klib">
+      <UniqueIdentifier>{c4651e05-edd3-4465-8ae8-8cfa5ad10c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="klib\thread">
+      <UniqueIdentifier>{6d967e9a-4f42-497a-b885-734037202ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="klib\util">
+      <UniqueIdentifier>{a788fd6f-9b43-41f8-aea1-8ddc916c487c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\util\KStringUtility.cpp">
-      <Filter>src\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\KTime.cpp">
-      <Filter>src\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KAny.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KAtomic.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KBuffer.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KCondVariable.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KError.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KEventObject.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KException.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KLockGuard.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KMutex.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KPthread.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="src\thread\KQueue.cpp">
-      <Filter>src\thread</Filter>
-    </ClCompile>
     <ClCompile Include="src\SwAgent.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -108,50 +66,41 @@
     <ClCompile Include="src\http\SwReporter.cpp">
       <Filter>src\http</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KBuffer.cpp">
+      <Filter>klib\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KCondVariable.cpp">
+      <Filter>klib\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KError.cpp">
+      <Filter>klib\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KEventObject.cpp">
+      <Filter>klib\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KException.cpp">
+      <Filter>klib\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\thread\KMutex.cpp">
+      <Filter>klib\thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KBase64.cpp">
+      <Filter>klib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KEndian.cpp">
+      <Filter>klib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KSHA1.cpp">
+      <Filter>klib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KStringUtility.cpp">
+      <Filter>klib\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\klib.git\trunk\src\util\KTime.cpp">
+      <Filter>klib\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\util\KSingleton.hpp">
-      <Filter>include\util</Filter>
-    </ClInclude>
-    <ClInclude Include="include\util\KStringUtility.h">
-      <Filter>include\util</Filter>
-    </ClInclude>
-    <ClInclude Include="include\util\KTime.h">
-      <Filter>include\util</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KAny.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KAtomic.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KBuffer.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KCondVariable.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KError.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KEventObject.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KException.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KLockGuard.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KMutex.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KPthread.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="include\thread\KQueue.h">
-      <Filter>include\thread</Filter>
-    </ClInclude>
     <ClInclude Include="include\SwAgent.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -184,6 +133,66 @@
     </ClInclude>
     <ClInclude Include="include\http\SwReporter.h">
       <Filter>include\http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KAny.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KAtomic.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KBuffer.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KCondVariable.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KError.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KEventObject.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KException.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KLockGuard.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KMutex.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KPthread.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\thread\KQueue.h">
+      <Filter>klib\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KBase64.h">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KCsvFile.hpp">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KEndian.h">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KIniFile.hpp">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KSHA1.h">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KSingleton.hpp">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KStringUtility.h">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KTextFile.hpp">
+      <Filter>klib\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\klib.git\trunk\src\util\KTime.h">
+      <Filter>klib\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
