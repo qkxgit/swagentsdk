@@ -62,8 +62,6 @@
     <ClInclude Include="..\..\klib.git\trunk\src\util\KStringUtility.h" />
     <ClInclude Include="..\..\klib.git\trunk\src\util\KTextFile.hpp" />
     <ClInclude Include="..\..\klib.git\trunk\src\util\KTime.h" />
-    <ClInclude Include="include\http\SwHttp.h" />
-    <ClInclude Include="include\http\SwReporter.h" />
     <ClInclude Include="include\SwAgent.h" />
     <ClInclude Include="include\SwContext.h" />
     <ClInclude Include="include\SwCarrier.h" />
@@ -73,6 +71,8 @@
     <ClInclude Include="include\SwHeaders.h" />
     <ClInclude Include="include\SwSegment.h" />
     <ClInclude Include="include\SwSpan.h" />
+    <ClInclude Include="src\http\SwHttp.h" />
+    <ClInclude Include="src\http\SwReporter.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
