@@ -5,6 +5,7 @@ author:qkx
 */
 #include <cstdlib>
 #include "SwCarrier.h"
+#include "SwSnapshot.h"
 #include "util/KStringUtility.h"
 
 // 判断carrier是否有效
@@ -61,4 +62,9 @@ StringStringMap SwCarrier::ToIceContext() const
 	ctx[SwConstPeer] = dat.networkAddressUsedAtPeer;
 	ctx.insert(dat.correlation.begin(), dat.correlation.end());
 	return ctx;
+}
+
+void SwCarrier::FromSnapshot(const SwSnapshot& snapshot)
+{
+	dat = snapshot.dat;
 }

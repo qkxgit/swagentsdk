@@ -6,6 +6,7 @@ class SwSnapshot
 {
 	friend class SwSegmentRef;
 	friend class SwContext;
+	friend class SwCarrier;
 public:
 	SwSnapshot() {}
 

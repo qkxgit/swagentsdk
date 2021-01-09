@@ -3,6 +3,7 @@
 #include <string>
 #include "SwDefine.h"
 
+class SwSnapshot;
 class SwCarrier
 {
 	friend class SwSegmentRef;
@@ -15,6 +16,8 @@ public:
 	void FromIceContext(const StringStringMap& ctx);
 	// carrier 转换成Ice Context
 	StringStringMap ToIceContext() const;
+
+	void FromSnapshot(const SwSnapshot& snapshot);
 	
 private:
 	// 数据

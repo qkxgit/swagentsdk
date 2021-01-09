@@ -41,6 +41,7 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwSnapshot& ss)
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
 		span->Start();
+		span->SetTag("localIp", swCtx.GetAgent()->GetLocalIp());
 		break;
 	}
 	case Exit:
@@ -55,7 +56,7 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwSnapshot& ss)
 		SwCarrier carrier;
 		span->Inject(carrier);
 		ctx = carrier.ToIceContext();
-		span->SetTag("traceId", ctx["traceId"]);
+		span->SetTag("localIP", swCtx.GetAgent()->GetLocalIp());
 		break;
 	}
 	default:
@@ -66,6 +67,7 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwSnapshot& ss)
 		span->Start();
 		if (dat.snapshot.IsValid())
 			swCtx.Continued(dat.snapshot);
+		span->SetTag("localIp", swCtx.GetAgent()->GetLocalIp());
 		break;
 	}
 	ss = swCtx.Capture();

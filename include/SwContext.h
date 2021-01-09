@@ -32,6 +32,7 @@ public:
 	void Continued(const SwSnapshot& snapShot);
 	// 当前激活的span
 	SwSpan* ActiveSpan();
+	SwAgent* GetAgent();
 	
 private:
 	// 启动span

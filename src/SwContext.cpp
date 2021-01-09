@@ -127,6 +127,11 @@ SwSpan* SwContext::ActiveSpan()
 	return spans[spans.size() - 1];
 }
 
+SwAgent* SwContext::GetAgent()
+{
+	return agent;
+}
+
 // 启动context
 // span 激活的span，放入激活容器中
 void SwContext::Start(SwSpan* span)
