@@ -63,9 +63,9 @@ struct SwData
 	// 服务实例名称
 	std::string serviceInstance;
 	// 操作
-	std::string endpoint;
+	std::string operationName;
 	// 对端
-	std::string networkAddressUsedAtPeer;
+	std::string peer;
 	// 关联信息
 	StringStringMap correlation;
 

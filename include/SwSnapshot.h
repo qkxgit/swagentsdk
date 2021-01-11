@@ -16,6 +16,7 @@ public:
 		const std::string& operationName,
 		const std::string& service,
 		const std::string& serviceInstance,
+		const std::string& peer,
 		const StringStringMap & correlation);
 	// 序列化
 	void Serialize(std::string& r);

@@ -56,23 +56,23 @@ SwContext& SwContext::GetContext()
 // 创建localspan
 // operationName 操作名称
 // 返回span
-SwSpan* SwContext::CreateLocalSpan(const std::string& operationName)
+SwSpan* SwContext::CreateLocalSpan(const std::string& operationName, const std::string& peer)
 {
-	return new SwSpan(*this, operationName);
+	return new SwSpan(*this, operationName, peer);
 }
 
 // 创建entryspan
 // operationName 操作名称
 // carrier 上一个span的上下文信息
 // 返回span
-SwSpan* SwContext::CreateEntrySpan(const std::string& operationName, const SwCarrier& carrier)
+SwSpan* SwContext::CreateEntrySpan(const std::string& operationName, const std::string& peer, const SwCarrier& carrier)
 {
 	SwSpan* entrySpan = NULL;
 	SwSpan* parentSpan = ActiveSpan();
 	if (parentSpan && parentSpan->IsEntry())
 		entrySpan = parentSpan;
 	else
-		entrySpan = new SwEntrySpan(*this, operationName);
+		entrySpan = new SwEntrySpan(*this, operationName, peer);
 	if (carrier.IsValid())
 		entrySpan->Extract(carrier);
 	return entrySpan;
@@ -99,7 +99,7 @@ SwSnapshot SwContext::Capture()
 	SwSpan* span = ActiveSpan();
 	if (span)
 		return SwSnapshot(segment.relatedTraceIds[0], segment.segmentId, span->GetSpanId(),
-			span->GetOperationName(), agent->GetService(), agent->GetServiceInstance(), correlation);
+			span->GetOperationName(), agent->GetService(), agent->GetServiceInstance(), span->GetPeer(), correlation);
 	return SwSnapshot();
 }
 

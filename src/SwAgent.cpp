@@ -37,8 +37,8 @@ struct AgentProperties
 	std::string serviceInstance;
 };
 
-AgentConfig::AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance)
-	:swhost(swhost), localIp(localIp), service(service), serviceInstance(serviceInstance)
+AgentConfig::AgentConfig(const std::string& swhost, const std::string& localHost, const std::string& service, const std::string& serviceInstance)
+	:swhost(swhost), localHost(localHost), service(service), serviceInstance(serviceInstance)
 {
 
 }
@@ -264,7 +264,7 @@ bool SwAgent::Start(const AgentConfig& c)
 		{
 			SwBroker* broker = new SwBroker;
 			brokers.push_back(broker);
-			if (!broker->Start(AgentConfig(servers[i], c.localIp, c.service, c.serviceInstance)))
+			if (!broker->Start(AgentConfig(servers[i], c.localHost, c.service, c.serviceInstance)))
 			{
 				rc = false;
 				break;
@@ -343,9 +343,9 @@ const std::string& SwAgent::GetServiceInstance() const
 }
 
 // 获取本地IP
-const std::string& SwAgent::GetLocalIp() const
+const std::string& SwAgent::GetLocalHost() const
 {
-	return config->localIp;
+	return config->localHost;
 }
 
 const std::string SwAgent::GetVersion() const

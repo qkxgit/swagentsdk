@@ -249,8 +249,8 @@ void SwReporter::WriteJson(const SwSegment& seg, RapidJsonWriter& jw)
 				jw.Key("parentSpanId"); jw.Int(dat.spanId);
 				jw.Key("parentService"); jw.String(dat.service);
 				jw.Key("parentServiceInstance"); jw.String(dat.serviceInstance);
-				jw.Key("parentEndpoint"); jw.String(dat.endpoint);
-				jw.Key("networkAddressUsedAtPeer"); jw.String(dat.networkAddressUsedAtPeer);
+				jw.Key("parentEndpoint"); jw.String(dat.operationName);
+				jw.Key("networkAddressUsedAtPeer"); jw.String(dat.peer);
 				jw.EndObject();
 				++sit;
 			}

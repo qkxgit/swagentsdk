@@ -16,8 +16,8 @@ bool SwCarrier::IsValid() const
 		&& !dat.segmentId.empty()
 		&& !dat.service.empty()
 		&& !dat.serviceInstance.empty()
-		&& !dat.endpoint.empty()
-		&& !dat.networkAddressUsedAtPeer.empty()
+		&& !dat.operationName.empty()
+		&& !dat.peer.empty()
 		&& dat.spanId > -1;
 }
 
@@ -39,9 +39,9 @@ void SwCarrier::FromIceContext(const StringStringMap& ctx)
 		else if (it->first.compare(SwConstServiceInstance) == 0)
 			dat.serviceInstance = it->second;
 		else if (it->first.compare(SwConstOperationName) == 0)
-			dat.endpoint = it->second;
+			dat.operationName = it->second;
 		else if (it->first.compare(SwConstPeer) == 0)
-			dat.networkAddressUsedAtPeer = it->second;
+			dat.peer = it->second;
 		else
 			dat.correlation[it->first] = it->second;
 		++it;
@@ -58,8 +58,8 @@ StringStringMap SwCarrier::ToIceContext() const
 	ctx[SwConstSpanId] = klib::KStringUtility::Int32ToString(dat.spanId);
 	ctx[SwConstService] = dat.service;
 	ctx[SwConstServiceInstance] = dat.serviceInstance;
-	ctx[SwConstOperationName] = dat.endpoint;
-	ctx[SwConstPeer] = dat.networkAddressUsedAtPeer;
+	ctx[SwConstOperationName] = dat.operationName;
+	ctx[SwConstPeer] = dat.peer;
 	ctx.insert(dat.correlation.begin(), dat.correlation.end());
 	return ctx;
 }

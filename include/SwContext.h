@@ -21,9 +21,9 @@ public:
 	// 线程退出时销毁context
 	static void DestroyContext();
 	// 创建LocalSpan
-	SwSpan* CreateLocalSpan(const std::string& operationName);
+	SwSpan* CreateLocalSpan(const std::string& operationName, const std::string& peer);
 	// 创建EntrySpan
-	SwSpan* CreateEntrySpan(const std::string& operationName, const SwCarrier& carrier);
+	SwSpan* CreateEntrySpan(const std::string& operationName, const std::string& peer, const SwCarrier& carrier);
 	// 创建ExitSpan
 	SwSpan* CreateExitSpan(const std::string& operationName, const std::string& peer);
 	// 获取当前激活的Span快照

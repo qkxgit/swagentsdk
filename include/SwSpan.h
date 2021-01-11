@@ -10,7 +10,7 @@ class SwSpan
 {
 	friend class SwContext;
 public:
-	SwSpan(SwContext & ctx, const std::string &op, SwEnumSpanKind k = Local);
+	SwSpan(SwContext & ctx, const std::string &op, const std::string& peer, SwEnumSpanKind k = Local);
 
 	inline bool IsEntry() const { return kind == Entry; }
 	inline bool IsExit() const { return kind == Exit; }
@@ -93,7 +93,7 @@ protected:
 class SwEntrySpan :public SwStackedSpan
 {
 public:
-	SwEntrySpan(SwContext& ctx, const std::string& op);
+	SwEntrySpan(SwContext& ctx, const std::string& op, const std::string& p);
 	// 开始
 	virtual void Start();
 	// 解压

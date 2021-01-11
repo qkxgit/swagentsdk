@@ -191,5 +191,8 @@
     <ClInclude Include="src\http\SwReporter.h">
       <Filter>src\http</Filter>
     </ClInclude>
+    <ClInclude Include="include\SwIceUtil.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

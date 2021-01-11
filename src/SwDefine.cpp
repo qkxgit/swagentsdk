@@ -20,7 +20,7 @@ bool SwData::operator==(const SwData& r) const
 		&& spanId == r.spanId
 		&& service == r.service
 		&& serviceInstance == r.serviceInstance
-		&& endpoint == r.endpoint
-		&& networkAddressUsedAtPeer == r.networkAddressUsedAtPeer
+		&& operationName == r.operationName
+		&& peer == r.peer
 		&& correlation == r.correlation;
 }

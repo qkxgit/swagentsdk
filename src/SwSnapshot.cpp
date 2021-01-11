@@ -32,6 +32,7 @@ private:
 SwSnapshot::SwSnapshot(const std::string& traceId, const std::string& segmentId, int spanId, const std::string& operationName, 
 	const std::string& service,
 	const std::string& serviceInstance,
+	const std::string& peer,
 	const StringStringMap& correlation)
 {
 	dat.traceId = traceId;
@@ -39,8 +40,8 @@ SwSnapshot::SwSnapshot(const std::string& traceId, const std::string& segmentId,
 	dat.spanId = spanId;
 	dat.service = service;
 	dat.serviceInstance = serviceInstance;
-	dat.endpoint = operationName;
-	dat.networkAddressUsedAtPeer = "";
+	dat.operationName = operationName;
+	dat.peer = peer;
 	dat.correlation = correlation;
 }
 
@@ -54,8 +55,8 @@ void SwSnapshot::Serialize(std::string& r)
 	w.Key(SwConstSpanId); w.Int(dat.spanId);
 	w.Key(SwConstService); w.String(dat.service);
 	w.Key(SwConstServiceInstance); w.String(dat.serviceInstance);
-	w.Key(SwConstOperationName); w.String(dat.endpoint);
-	w.Key(SwConstPeer); w.String(dat.networkAddressUsedAtPeer);
+	w.Key(SwConstOperationName); w.String(dat.operationName);
+	w.Key(SwConstPeer); w.String(dat.peer);
 	w.Key("correlation"); w.StartObject();
 	StringStringMap::const_iterator it = dat.correlation.begin();
 	while (it != dat.correlation.end())
@@ -97,11 +98,11 @@ bool SwSnapshot::Parse(const std::string& s)
 
 	if (!doc.HasMember(SwConstOperationName))
 		return false;
-	dat.endpoint = doc[SwConstOperationName].GetString();
+	dat.operationName = doc[SwConstOperationName].GetString();
 
-	if (!doc.HasMember(SwConstPeer))
-		return false;
-	dat.networkAddressUsedAtPeer = doc[SwConstPeer].GetString();
+    if (!doc.HasMember(SwConstPeer))
+        return false;
+    dat.peer = doc[SwConstPeer].GetString();
 
 	const rapidjson::Value &correlation = doc["correlation"];
 	if (correlation.IsObject())

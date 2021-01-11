@@ -129,8 +129,8 @@ struct SwParameter
 	}
 
 	// entry span
-	SwParameter(const std::string& op, const StringStringMap& c)
-		:operationName(op), kind(Entry), component(rpc), layer(RPCFramework)
+	SwParameter(const std::string& op, const std::string& peer, const StringStringMap& c)
+		:operationName(op), kind(Entry), component(rpc), layer(RPCFramework),peer(peer)
 	{
 		carrier.FromIceContext(c);
 	}

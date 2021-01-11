@@ -7,9 +7,9 @@ author:qkx
 #include "SwContext.h"
 #include "SwAgent.h"
 #include "util/KTime.h"
-SwSpan::SwSpan(SwContext& ctx, const std::string& op, SwEnumSpanKind k) 
+SwSpan::SwSpan(SwContext& ctx, const std::string& op, const std::string &peer, SwEnumSpanKind k) 
 	:ctx(ctx), operationName(op), kind(k),component(rpc), layer(RPCFramework),
-	errorOcurred(false),startTime(0),endTime(0)
+	errorOcurred(false),startTime(0),endTime(0),peer(peer)
 {
 	spanId = ++ctx.sid;
 	SwSpan* span = ctx.ActiveSpan();
@@ -65,13 +65,13 @@ void SwSpan::Extract(const SwCarrier& carrier)
 }
 
 SwStackedSpan::SwStackedSpan(SwContext& ctx, SwEnumSpanKind k, const std::string& op, const std::string& p)
-	:SwSpan(ctx, op, k),depth(0)
+	:SwSpan(ctx, op, p, k),depth(0)
 {
-	peer = p;
+	
 }
 
-SwEntrySpan::SwEntrySpan(SwContext& ctx, const std::string& op) 
-	:SwStackedSpan(ctx, Entry, op, std::string())
+SwEntrySpan::SwEntrySpan(SwContext& ctx, const std::string& op, const std::string& p)
+	:SwStackedSpan(ctx, Entry, op, p)
 {
 
 }
@@ -129,8 +129,8 @@ void SwExitSpan::Inject(SwCarrier& carrier)
 	carrier.dat.spanId = spanId;
 	carrier.dat.service = ctx.agent->GetService();//
 	carrier.dat.serviceInstance = ctx.agent->GetServiceInstance();//
-	carrier.dat.endpoint = operationName;
-	carrier.dat.networkAddressUsedAtPeer = peer;
+	carrier.dat.operationName = operationName;
+	carrier.dat.peer = peer;
 	carrier.dat.correlation = ctx.correlation;
 }
 

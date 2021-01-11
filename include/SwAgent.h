@@ -7,12 +7,12 @@
 struct AgentConfig
 {
 	std::string swhost;
-	std::string localIp;
+	std::string localHost;
 	std::string service;
 	std::string serviceInstance;
 
 	AgentConfig() {}
-	AgentConfig(const std::string& swhost, const std::string& localIp, const std::string& service, const std::string& serviceInstance);
+	AgentConfig(const std::string& swhost, const std::string& localHost, const std::string& service, const std::string& serviceInstance);
 };
 class SwSegment;
 class SwReporter;
@@ -97,7 +97,7 @@ public:
 	// 获取服务实例
 	const std::string& GetServiceInstance() const;
 	// 获取本地IP
-	const std::string& GetLocalIp() const;
+	const std::string& GetLocalHost() const;
 	// 获取版本信息
 	const std::string GetVersion() const;
 

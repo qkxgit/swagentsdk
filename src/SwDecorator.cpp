@@ -36,12 +36,12 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwSnapshot& ss)
 	{
 	case Entry:
 	{
-		span = swCtx.CreateEntrySpan(dat.operationName, dat.carrier);
+		span = swCtx.CreateEntrySpan(dat.operationName, dat.peer, dat.carrier);
 		span->SetTags(dat.tags);
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
 		span->Start();
-		span->SetTag("localIp", swCtx.GetAgent()->GetLocalIp());
+		span->SetTag("LocalHost", swCtx.GetAgent()->GetLocalHost());
 		break;
 	}
 	case Exit:
@@ -56,18 +56,18 @@ SwSpan* CreateSpan(const SwParameter& dat, StringStringMap& ctx, SwSnapshot& ss)
 		SwCarrier carrier;
 		span->Inject(carrier);
 		ctx = carrier.ToIceContext();
-		span->SetTag("localIP", swCtx.GetAgent()->GetLocalIp());
+		span->SetTag("LocalHost", swCtx.GetAgent()->GetLocalHost());
 		break;
 	}
 	default:
-		span = swCtx.CreateLocalSpan(dat.operationName);
+		span = swCtx.CreateLocalSpan(dat.operationName, swCtx.GetAgent()->GetLocalHost());
 		span->SetTags(dat.tags);
 		span->SetLayer(dat.layer);
 		span->SetComponent(dat.component);
 		span->Start();
 		if (dat.snapshot.IsValid())
 			swCtx.Continued(dat.snapshot);
-		span->SetTag("localIp", swCtx.GetAgent()->GetLocalIp());
+		span->SetTag("LocalHost", swCtx.GetAgent()->GetLocalHost());
 		break;
 	}
 	ss = swCtx.Capture();
