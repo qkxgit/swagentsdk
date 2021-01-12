@@ -27,8 +27,14 @@ SwConnectionInfo SwIceUtil::GetConnectionInfo(const ::Ice::Current& cur)
         if (addrInfo)
         {
             swc.localAddr = addrInfo->localAddress;
+            size_t pos = swc.localAddr.find_last_of(':');
+            if (pos != std::string::npos && pos + 1 < swc.localAddr.size())
+                swc.localAddr = swc.localAddr.substr(pos + 1);
             swc.localPort = addrInfo->localPort;
             swc.remoteAddr = addrInfo->remoteAddress;
+            pos = swc.remoteAddr.find_last_of(':');
+            if (pos != std::string::npos && pos + 1 < swc.remoteAddr.size())
+                swc.remoteAddr = swc.remoteAddr.substr(pos + 1);
             swc.remotePort = addrInfo->remotePort;
         }
     }
