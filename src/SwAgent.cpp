@@ -296,6 +296,7 @@ void SwAgent::WaitForStop()
 		b->WaitForStop();
 		delete b;
 	}
+	klib::KLockGuard<klib::KMutex> lock(*brokerMtx);
 	brokers.clear();
 }
 
